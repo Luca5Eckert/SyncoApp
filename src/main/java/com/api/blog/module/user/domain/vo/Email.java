@@ -1,0 +1,22 @@
+package com.api.blog.module.user.domain.vo;
+
+import com.api.blog.module.user.domain.exception.email.EmailInvalidException;
+import com.api.blog.module.user.domain.exception.email.EmailLengthException;
+import org.apache.commons.validator.routines.EmailValidator;
+
+public record Email(String address) {
+
+
+    public Email{
+        if(address.length() > 150) throw new EmailLengthException(150);
+
+        if(isValid(address)) throw new EmailInvalidException();
+
+    }
+
+    private boolean isValid(String address) {
+        return EmailValidator.getInstance().isValid(address);
+    }
+
+
+}
