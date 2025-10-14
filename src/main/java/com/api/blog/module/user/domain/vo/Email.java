@@ -13,7 +13,7 @@ public record Email(String address) {
 
         if(address.length() > 150) throw new EmailLengthException(150);
 
-        if(isValid(address)) throw new EmailInvalidException();
+        if(!isValid(address)) throw new EmailInvalidException();
 
     }
 
