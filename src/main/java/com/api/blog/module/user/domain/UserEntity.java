@@ -1,6 +1,7 @@
 package com.api.blog.module.user.domain;
 
 import com.api.blog.module.user.domain.vo.Email;
+import com.api.blog.module.user.domain.vo.Name;
 import jakarta.persistence.*;
 
 @Entity
