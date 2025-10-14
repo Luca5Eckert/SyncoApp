@@ -1,4 +1,4 @@
-package com.api.blog.infrascturure.persistense.user.security;
+package com.api.blog.infrastructure.persistense.user.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.api.blog.infrascturure.persistense.user.converter;
+package com.api.blog.infrastructure.persistense.user.converter;
 
 import com.api.blog.module.user.domain.vo.Name;
 import jakarta.persistence.AttributeConverter;

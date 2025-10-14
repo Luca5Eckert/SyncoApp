@@ -1,4 +1,4 @@
-package com.api.blog.infrascturure.exception;
+package com.api.blog.infrastructure.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
