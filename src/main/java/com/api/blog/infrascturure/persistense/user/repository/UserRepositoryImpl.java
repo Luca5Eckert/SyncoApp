@@ -2,6 +2,7 @@ package com.api.blog.infrascturure.persistense.user.repository;
 
 import com.api.blog.module.user.domain.UserEntity;
 import com.api.blog.module.user.domain.port.UserRepository;
+import com.api.blog.module.user.domain.vo.Email;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,6 +17,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void save(UserEntity user) {
         jpaUserRepository.save(user);
+    }
+
+    @Override
+    public boolean existsByEmail(Email email) {
+        return jpaUserRepository.existsByEmail(email);
     }
 
 }

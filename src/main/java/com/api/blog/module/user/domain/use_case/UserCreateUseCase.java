@@ -2,6 +2,7 @@ package com.api.blog.module.user.domain.use_case;
 
 import com.api.blog.module.user.application.dto.create.UserCreateRequest;
 import com.api.blog.module.user.domain.UserEntity;
+import com.api.blog.module.user.domain.exception.email.EmailNotUniqueException;
 import com.api.blog.module.user.domain.exception.password.PasswordNotValidException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
@@ -42,6 +43,8 @@ public class UserCreateUseCase {
         String password = passwordEncoder.encode(userCreateRequest.password());
 
         UserEntity user = new UserEntity(name, email, password, userCreateRequest.roleUser());
+
+        if(userRepository.existsByEmail(user.getEmail())) throw new EmailNotUniqueException();
 
         userRepository.save(user);
 
