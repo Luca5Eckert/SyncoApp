@@ -34,13 +34,11 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(Name name, Email email, String password, RoleUser role, Instant createAt, Instant updateAt) {
+    public UserEntity(Name name, Email email, String password, RoleUser role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
-        this.createAt = createAt;
-        this.updateAt = updateAt;
     }
 
     public RoleUser getRole() {
