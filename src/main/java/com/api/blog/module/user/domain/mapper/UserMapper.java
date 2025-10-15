@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserMapper {
     public UserCreateResponse toCreateResponse(UserEntity user) {
-        return new UserCreateResponse(user.getId(), user.getName().value(), user.getEmail().address(), user.getPassword(), user
+        return new UserCreateResponse(user.getId(), user.getName().value(), user.getEmail().address(), user
                 .getRole());
     }
 
