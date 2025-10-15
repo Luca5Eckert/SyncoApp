@@ -4,16 +4,15 @@ import com.api.blog.core.UserAuthenticationService;
 import com.api.blog.module.user.application.dto.create.UserCreateRequest;
 import com.api.blog.module.user.application.dto.create.UserCreateResponse;
 import com.api.blog.module.user.application.dto.delete.UserDeleteRequest;
+import com.api.blog.module.user.application.dto.edit.UserEditRequest;
+import com.api.blog.module.user.application.dto.edit.UserEditResponse;
 import com.api.blog.module.user.domain.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("api/blog/users")
@@ -40,6 +39,15 @@ public class UserController {
         userService.delete(userDeleteRequest, idUserAutenticated);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body("User deleted with success");
+    }
+
+    @PatchMapping
+    public ResponseEntity<UserEditResponse> edit(@RequestBody @Valid UserEditRequest userEditRequest){
+        long idUserAutenticated = authenticationService.getAuthenticatedUserId();
+
+        var response = userService.edit(userEditRequest, idUserAutenticated);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
 }
