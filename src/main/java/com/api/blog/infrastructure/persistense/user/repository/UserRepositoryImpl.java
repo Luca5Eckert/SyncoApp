@@ -5,6 +5,7 @@ import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.vo.Email;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,6 +40,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteById(long id) {
         jpaUserRepository.deleteById(id);
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+        return jpaUserRepository.findAll();
     }
 
 }

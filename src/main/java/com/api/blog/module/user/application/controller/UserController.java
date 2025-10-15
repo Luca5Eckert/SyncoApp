@@ -9,11 +9,12 @@ import com.api.blog.module.user.application.dto.edit.UserEditResponse;
 import com.api.blog.module.user.application.dto.get.UserGetResponse;
 import com.api.blog.module.user.domain.service.UserService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("api/blog/users")
@@ -56,5 +57,12 @@ public class UserController {
         var user = userService.get(id);
         return ResponseEntity.ok(user);
     }
+
+    @GetMapping()
+    public ResponseEntity<List<UserGetResponse>> getAll(){
+        var users = userService.getAll();
+        return ResponseEntity.ok(users);
+    }
+
 
 }
