@@ -35,6 +35,7 @@ public class UserCreateUseCase {
      * @return The created user.
      */
     public UserEntity execute(@Valid UserCreateRequest userCreateRequest) {
+
         Name name = new Name(userCreateRequest.name());
         Email email = new Email(userCreateRequest.email());
 

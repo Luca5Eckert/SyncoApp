@@ -84,4 +84,8 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean canDeleteUser() {
+        return role == RoleUser.ADMIN;
+    }
 }
