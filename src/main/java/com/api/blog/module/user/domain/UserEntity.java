@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_tb")
@@ -18,8 +19,8 @@ public class UserEntity {
     private long id;
 
     private Name name;
-    private Email email;
 
+    private Email email;
     private String password;
 
     @Enumerated(EnumType.STRING)
@@ -88,4 +89,21 @@ public class UserEntity {
     public boolean canDeleteUser() {
         return role == RoleUser.ADMIN;
     }
+
+    public boolean canEditUser() {
+        return role == RoleUser.ADMIN;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity user = (UserEntity) o;
+        return id == user.id && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && role == user.role && Objects.equals(createAt, user.createAt) && Objects.equals(updateAt, user.updateAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, password, role, createAt, updateAt);
+    }
+
 }
