@@ -6,6 +6,7 @@ import com.api.blog.module.user.application.dto.create.UserCreateResponse;
 import com.api.blog.module.user.application.dto.delete.UserDeleteRequest;
 import com.api.blog.module.user.application.dto.edit.UserEditRequest;
 import com.api.blog.module.user.application.dto.edit.UserEditResponse;
+import com.api.blog.module.user.application.dto.get.UserGetResponse;
 import com.api.blog.module.user.domain.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +49,12 @@ public class UserController {
         var response = userService.edit(userEditRequest, idUserAutenticated);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserGetResponse> get(@PathVariable("id") long id){
+        var user = userService.get(id);
+        return ResponseEntity.ok(user);
     }
 
 }
