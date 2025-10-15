@@ -18,4 +18,6 @@ public interface UserRepository {
     void deleteById(long id);
 
     List<UserEntity> findAll();
+
+    Optional<UserEntity> findByEmail(Email email);
 }
