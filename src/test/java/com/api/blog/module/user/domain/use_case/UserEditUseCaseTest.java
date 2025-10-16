@@ -54,13 +54,33 @@ class UserEditUseCaseTest {
     }
 
     @Test
-    public void shouldEditUserWithSuccess(){
+    public void shouldEditUserWithSuccessWhenUserHavePermission(){
         //arrange
         when(userRepository.findById(id)).thenReturn(Optional.of(userToEdit));
         when(userRepository.findById(idAuthenticateUser)).thenReturn(Optional.of(authenticateUser));
 
         //act
         var user = userEditUseCase.execute(userEditRequest, idAuthenticateUser);
+
+        //assert -- verify the returned user
+        assertThat(user.getName().value()).isEqualTo(name);
+        assertThat(user.getEmail().address()).isEqualTo(email);
+
+        //assert - verify the user saved
+        var captor = ArgumentCaptor.forClass(UserEntity.class);
+        verify(userRepository).save(captor.capture());
+        var edited = captor.getValue();
+        assertThat(edited.getName()).isEqualTo(user.getName());
+        assertThat(edited.getEmail()).isEqualTo(user.getEmail());
+    }
+
+    @Test
+    public void shouldEditUserWithSuccessWhenUserIsEditHimself(){
+        //arrange
+        when(userRepository.findById(id)).thenReturn(Optional.of(userToEdit));
+
+        //act
+        var user = userEditUseCase.execute(userEditRequest, id);
 
         //assert -- verify the returned user
         assertThat(user.getName().value()).isEqualTo(name);
