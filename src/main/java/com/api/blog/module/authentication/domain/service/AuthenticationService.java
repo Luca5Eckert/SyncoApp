@@ -1,8 +1,11 @@
 package com.api.blog.module.authentication.domain.service;
 
+import com.api.blog.module.authentication.application.dto.login.UserLoginRequest;
+import com.api.blog.module.authentication.application.dto.login.UserLoginResponse;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterRequest;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterResponse;
 import com.api.blog.module.authentication.domain.mapper.AuthenticationMapper;
+import com.api.blog.module.authentication.domain.use_case.UserLoginUseCase;
 import com.api.blog.module.authentication.domain.use_case.UserRegisterUseCase;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -13,15 +16,21 @@ public class AuthenticationService {
     private final AuthenticationMapper authenticationMapper;
 
     private final UserRegisterUseCase registerUseCase;
+    private final UserLoginUseCase loginUseCase;
 
-
-    public AuthenticationService(AuthenticationMapper authenticationMapper, UserRegisterUseCase registerUseCase) {
+    public AuthenticationService(AuthenticationMapper authenticationMapper, UserRegisterUseCase registerUseCase, UserLoginUseCase loginUseCase) {
         this.authenticationMapper = authenticationMapper;
         this.registerUseCase = registerUseCase;
+        this.loginUseCase = loginUseCase;
     }
 
     public UserRegisterResponse register(@Valid UserRegisterRequest userRegisterRequest) {
         var user = registerUseCase.execute(userRegisterRequest);
         return authenticationMapper.toRegisterResponse(user);
     }
+
+    public UserLoginResponse login(UserLoginRequest userLoginRequest) {
+        return loginUseCase.execute(userLoginRequest);
+    }
+
 }
