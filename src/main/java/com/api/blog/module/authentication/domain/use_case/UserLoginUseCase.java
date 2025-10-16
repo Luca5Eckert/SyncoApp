@@ -9,7 +9,9 @@ import com.api.blog.module.authentication.domain.mapper.AuthenticationMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserLoginUseCase {
 
     private final AuthenticationManager authenticationManager;
@@ -37,4 +39,5 @@ public class UserLoginUseCase {
 
         return authenticationMapper.toLoginResponse(userDetails, token);
     }
+
 }
