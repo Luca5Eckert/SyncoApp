@@ -42,6 +42,13 @@ public class UserEntity {
         this.role = role;
     }
 
+    public UserEntity(long id, Name name, Email email, String password, RoleUser role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
     public RoleUser getRole() {
         return role;
     }
