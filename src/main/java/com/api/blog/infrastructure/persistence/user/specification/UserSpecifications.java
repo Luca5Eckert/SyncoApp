@@ -18,7 +18,10 @@ public class UserSpecifications {
     public static Specification<UserEntity> emailContains(String email) {
         return (root, query, cb) -> {
             if (email == null || email.isBlank()) return null;
-            return cb.like(cb.lower(root.get("email").as(String.class)), "%" + email.toLowerCase() + "%");
+            return cb.like(
+                    cb.lower(root.get("email").get("value").as(String.class)),
+                    "%" + email.toLowerCase() + "%"
+            );
         };
     }
 
@@ -32,10 +35,12 @@ public class UserSpecifications {
     public static Specification<UserEntity> createdBetween(Instant from, Instant to) {
         return (root, query, cb) -> {
             if (from == null && to == null) return null;
-            var path = root.get("createAt");
+
+            var path = root.<Instant>get("createAt");
+
             Instant start = (from != null) ? from : Instant.EPOCH;
-            // Evita Instant.MAX (pode estourar alguns bancos). Usa "agora" como teto padrão.
             Instant end = (to != null) ? to : Instant.now();
+
             return cb.between(path, start, end);
         };
     }

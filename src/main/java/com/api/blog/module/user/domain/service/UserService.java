@@ -54,8 +54,8 @@ public class UserService {
         return userMapper.toGetResponse(user);
     }
 
-    public List<UserGetResponse> getAll(String name, String email, RoleUser roleUser, Instant createAt, Instant updateAt) {
-        var users = userGetAllUseCase.execute(name, email, roleUser, createAt, updateAt);
+    public List<UserGetResponse> getAll(String name, String email, RoleUser roleUser, Instant createAt, Instant updateAt, int pageNumber, int pageSize) {
+        var users = userGetAllUseCase.execute(name, email, roleUser, createAt, updateAt, pageNumber, pageSize);
         return users.stream().map(userMapper::toGetResponse).toList();
     }
 
