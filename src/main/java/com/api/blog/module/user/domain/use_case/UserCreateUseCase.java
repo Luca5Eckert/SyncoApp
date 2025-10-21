@@ -8,7 +8,6 @@ import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.blog.module.user.domain.vo.Email;
 import com.api.blog.module.user.domain.vo.Name;
-import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -34,7 +33,7 @@ public class UserCreateUseCase {
      * @param userCreateRequest Request with user data.
      * @return The created user.
      */
-    public UserEntity execute(@Valid UserCreateRequest userCreateRequest) {
+    public UserEntity execute(UserCreateRequest userCreateRequest) {
 
         Name name = new Name(userCreateRequest.name());
         Email email = new Email(userCreateRequest.email());

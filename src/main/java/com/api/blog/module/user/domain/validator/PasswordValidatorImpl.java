@@ -1,7 +1,5 @@
 package com.api.blog.module.user.domain.validator;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.passay.*;
 import org.springframework.stereotype.Component;
 

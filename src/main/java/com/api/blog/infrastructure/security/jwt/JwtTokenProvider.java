@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.security.Key;
-import java.util.UUID;
 
 @Component
 public class JwtTokenProvider {

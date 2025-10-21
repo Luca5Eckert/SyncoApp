@@ -8,8 +8,6 @@ import com.api.blog.module.user.application.dto.edit.UserEditResponse;
 import com.api.blog.module.user.application.dto.get.UserGetResponse;
 import com.api.blog.module.user.domain.mapper.UserMapper;
 import com.api.blog.module.user.domain.use_case.*;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
