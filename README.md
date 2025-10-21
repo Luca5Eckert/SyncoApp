@@ -37,11 +37,3 @@ Contribuindo
   - [ ] Instruções para rodar e acessar Swagger UI
   - [ ] Exemplos de requests (curl) para endpoints principais
 
-Exemplo de curl
-- Listar posts:
-  curl -sS http://localhost:8080/posts | jq .
-
-Contato
-- Se quiser, eu posso:
-  - gerar `docs/openapi.yaml` completo com base nos controllers (se você me enviar os controllers), ou
-  - abrir um PR com esses arquivos.
