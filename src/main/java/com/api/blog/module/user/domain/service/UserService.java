@@ -6,10 +6,13 @@ import com.api.blog.module.user.application.dto.delete.UserDeleteRequest;
 import com.api.blog.module.user.application.dto.edit.UserEditRequest;
 import com.api.blog.module.user.application.dto.edit.UserEditResponse;
 import com.api.blog.module.user.application.dto.get.UserGetResponse;
+import com.api.blog.module.user.domain.enumerator.RoleUser;
+import com.api.blog.module.user.domain.filter.UserFilter;
 import com.api.blog.module.user.domain.mapper.UserMapper;
 import com.api.blog.module.user.domain.use_case.*;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -51,8 +54,8 @@ public class UserService {
         return userMapper.toGetResponse(user);
     }
 
-    public List<UserGetResponse> getAll() {
-        var users = userGetAllUseCase.execute();
+    public List<UserGetResponse> getAll(String name, String email, RoleUser roleUser, Instant createAt, Instant updateAt, int pageNumber, int pageSize) {
+        var users = userGetAllUseCase.execute(name, email, roleUser, createAt, updateAt, pageNumber, pageSize);
         return users.stream().map(userMapper::toGetResponse).toList();
     }
 
