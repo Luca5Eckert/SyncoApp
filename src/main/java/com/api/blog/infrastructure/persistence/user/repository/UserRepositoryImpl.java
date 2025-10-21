@@ -3,6 +3,7 @@ package com.api.blog.infrastructure.persistence.user.repository;
 import com.api.blog.module.user.domain.UserEntity;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.vo.Email;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<UserEntity> findAll() {
+    public List<UserEntity> findAll(Specification<UserEntity> userEntitySpecification) {
         return jpaUserRepository.findAll();
     }
 
