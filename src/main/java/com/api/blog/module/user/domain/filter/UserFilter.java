@@ -1,59 +1,65 @@
 package com.api.blog.module.user.domain.filter;
 
-public class UserFilter {
+import com.api.blog.module.user.domain.enumerator.RoleUser;
+import java.time.Instant;
 
-    private String name;
-    private String email;
-    private String role;
+public record UserFilter(String nameContains,
+                         String emailContains,
+                         RoleUser role,
+                         Instant createAt,
+                         Instant createTo // Consider renaming to 'createdTo' or similar for clarity
+) {
 
-    public UserFilter(Builder builder) {
-        this.name = builder.name;
-        this.email = builder.email;
-        this.role = builder.role;
-    }
+    // --- Builder Pattern Implementation ---
 
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getRole() {
-        return role;
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
 
-        private String name;
-        private String email;
-        private String role;
+        private String nameContains;
+        private String emailContains;
+        private RoleUser role;
+        private Instant createAt;
+        private Instant createTo;
 
-        public Builder(){
+        private Builder() {
         }
 
-        public Builder setName(String name){
-            this.name = name;
+        public Builder setNameContains(String nameContains) {
+            this.nameContains = nameContains;
             return this;
         }
 
-        public Builder setEmail(String email){
-            this.email = email;
+        public Builder setEmailContains(String emailContains) {
+            this.emailContains = emailContains;
             return this;
         }
 
-        public Builder setRole(String role){
+        public Builder setRole(RoleUser role) {
             this.role = role;
             return this;
         }
 
-        public UserFilter build(){
-            return new UserFilter(this);
+        public Builder setCreatedFrom(Instant createAt) {
+            this.createAt = createAt;
+            return this;
         }
 
+        public Builder setCreatedTo(Instant createTo) {
+            this.createTo = createTo;
+            return this;
+        }
 
+        public UserFilter build() {
+            return new UserFilter(
+                    this.nameContains,
+                    this.emailContains,
+                    this.role,
+                    this.createAt,
+                    this.createTo
+            );
+        }
     }
-
-
 }
