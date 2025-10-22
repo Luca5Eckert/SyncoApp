@@ -7,10 +7,8 @@ public record UserFilter(String nameContains,
                          String emailContains,
                          RoleUser role,
                          Instant createAt,
-                         Instant createTo // Consider renaming to 'createdTo' or similar for clarity
+                         Instant createTo
 ) {
-
-    // --- Builder Pattern Implementation ---
 
     public static Builder builder() {
         return new Builder();

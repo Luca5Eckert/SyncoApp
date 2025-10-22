@@ -7,7 +7,6 @@ public record PageUser(int pageNumber,
     public final static int DEFAULT_PAGE_SIZE = 10;
     public final static int MAX_PAGE_SIZE = 50;
 
-    // Compact Constructor for Validation
     public PageUser {
         if (pageNumber < MIN_PAGE_NUMBER) {
             pageNumber = MIN_PAGE_NUMBER;
@@ -18,4 +17,5 @@ public record PageUser(int pageNumber,
         }
 
     }
+
 }
