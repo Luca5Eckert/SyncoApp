@@ -64,7 +64,7 @@ class UserDeleteUseCaseTest {
         assertThatThrownBy(() -> userDeleteUseCase.execute(userDeleteRequest, idUserAuthentication))
                 .isInstanceOf(UserNotFoundException.class);
 
-        verify(userRepository, never()).deleteById(any());
+        verify(userRepository, never()).deleteById(anyLong());
     }
 
     @Test
