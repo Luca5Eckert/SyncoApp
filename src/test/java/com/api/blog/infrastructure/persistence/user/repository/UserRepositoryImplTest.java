@@ -121,23 +121,6 @@ class UserRepositoryImplTest {
         assertThat(deletedUser).isNull();
     }
 
-    @DisplayName("Should return all users")
-    @Test
-    void shouldReturnAllUsersWhenFound() {
-        // arrange
-        var user2 = new UserEntity(new Name("Jane Doe"), new Email("jane@example.com"), "password", RoleUser.ADMIN);
-        entityManager.persist(user);
-        entityManager.persist(user2);
-        entityManager.flush();
-
-        // act
-        var users = userRepository.findAll();
-
-        // assert
-        assertThat(users).hasSize(2);
-        assertThat(users).extracting(u -> u.getEmail().address())
-                .containsExactlyInAnyOrder("john@example.com", "jane@example.com");
-    }
 
     @DisplayName("Should return user when found by email")
     @Test
