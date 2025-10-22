@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/blog/auth")
-@Tag(name = "Autenticação", description = "Endpoints para registro e login de usuários")
+@Tag(name = "Authentication", description = "Endpoints for user registration and login")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
@@ -32,14 +32,14 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @Operation(
-        summary = "Registrar novo usuário",
-        description = "Cria um novo usuário no sistema com as credenciais fornecidas"
+            summary = "Register new user",
+            description = "Creates a new user in the system with the provided credentials"
     )
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
-            content = @Content(schema = @Schema(implementation = UserRegisterResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
-            content = @Content)
+            @ApiResponse(responseCode = "201", description = "User created successfully",
+                    content = @Content(schema = @Schema(implementation = UserRegisterResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid data provided",
+                    content = @Content)
     })
     public ResponseEntity<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         var user = authenticationService.register(userRegisterRequest);
@@ -48,14 +48,14 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     @Operation(
-        summary = "Fazer login",
-        description = "Autentica um usuário e retorna um token JWT para acesso aos endpoints protegidos"
+            summary = "User login",
+            description = "Authenticates a user and returns a JWT token for access to protected endpoints"
     )
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "202", description = "Login realizado com sucesso",
-            content = @Content(schema = @Schema(implementation = UserLoginResponse.class))),
-        @ApiResponse(responseCode = "401", description = "Credenciais inválidas",
-            content = @Content)
+            @ApiResponse(responseCode = "202", description = "Login successful",
+                    content = @Content(schema = @Schema(implementation = UserLoginResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials",
+                    content = @Content)
     })
     public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         var user = authenticationService.login(userLoginRequest);

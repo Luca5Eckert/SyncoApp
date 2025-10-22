@@ -24,12 +24,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-        import java.time.Instant;
+import java.time.Instant;
 import java.util.List;
 
 @Controller
 @RequestMapping("api/blog/users")
-@Tag(name = "Usuários", description = "Endpoints para gerenciamento de usuários")
+@Tag(name = "Users", description = "Endpoints for user management")
 @SecurityRequirement(name = "bearer-jwt")
 public class UserController {
 
@@ -43,15 +43,15 @@ public class UserController {
 
     @PostMapping
     @Operation(
-            summary = "Criar novo usuário",
-            description = "Cria um novo usuário no sistema. Requer autenticação."
+            summary = "Create new user",
+            description = "Creates a new user in the system. Requires authentication."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso",
+            @ApiResponse(responseCode = "201", description = "User created successfully",
                     content = @Content(schema = @Schema(implementation = UserCreateResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
+            @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
-            @ApiResponse(responseCode = "401", description = "Não autenticado",
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content)
     })
     public ResponseEntity<UserCreateResponse> create(@RequestBody @Valid UserCreateRequest userCreateRequest){
@@ -61,16 +61,16 @@ public class UserController {
 
     @DeleteMapping
     @Operation(
-            summary = "Deletar usuário",
-            description = "Remove um usuário do sistema. Apenas o próprio usuário ou um administrador podem deletar."
+            summary = "Delete user",
+            description = "Removes a user from the system. Only the user themselves or an administrator can delete."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Usuário deletado com sucesso"),
-            @ApiResponse(responseCode = "401", description = "Não autenticado",
+            @ApiResponse(responseCode = "202", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "Sem permissão para deletar este usuário",
+            @ApiResponse(responseCode = "403", description = "No permission to delete this user",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+            @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
     public ResponseEntity<?> delete(@RequestBody @Valid UserDeleteRequest userDeleteRequest){
@@ -83,19 +83,19 @@ public class UserController {
 
     @PatchMapping
     @Operation(
-            summary = "Editar usuário",
-            description = "Atualiza as informações de um usuário. Apenas o próprio usuário ou um administrador podem editar."
+            summary = "Edit user",
+            description = "Updates a user's information. Only the user themselves or an administrator can edit."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Usuário atualizado com sucesso",
+            @ApiResponse(responseCode = "202", description = "User updated successfully",
                     content = @Content(schema = @Schema(implementation = UserEditResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos",
+            @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
-            @ApiResponse(responseCode = "401", description = "Não autenticado",
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "Sem permissão para editar este usuário",
+            @ApiResponse(responseCode = "403", description = "No permission to edit this user",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+            @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
     public ResponseEntity<UserEditResponse> edit(@RequestBody @Valid UserEditRequest userEditRequest){
@@ -108,19 +108,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     @Operation(
-            summary = "Buscar usuário por ID",
-            description = "Retorna os dados de um usuário específico pelo seu ID"
+            summary = "Search user by ID",
+            description = "Returns the data for a specific user by their ID"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Usuário encontrado",
+            @ApiResponse(responseCode = "200", description = "User found",
                     content = @Content(schema = @Schema(implementation = UserGetResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Não autenticado",
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+            @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
     public ResponseEntity<UserGetResponse> get(
-            @Parameter(description = "ID do usuário", required = true)
+            @Parameter(description = "User ID", required = true)
             @PathVariable("id") long id){
         var user = userService.get(id);
         return ResponseEntity.ok(user);
@@ -128,36 +128,36 @@ public class UserController {
 
     @GetMapping()
     @Operation(
-            summary = "Listar e filtrar usuários com paginação",
-            description = "Retorna uma lista paginada de usuários, permitindo filtros por nome, email, role e datas."
+            summary = "List and filter users with pagination",
+            description = "Returns a paginated list of users, allowing filters by name, email, role, and dates."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso",
+            @ApiResponse(responseCode = "200", description = "List of users returned successfully",
                     content = @Content(schema = @Schema(implementation = UserGetResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Não autenticado",
+            @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content)
     })
     public ResponseEntity<List<UserGetResponse>> getAll(
             @RequestParam(value = "name", required = false)
-            @Parameter(description = "Filtra por nome que contém o valor")
+            @Parameter(description = "Filters by name containing the value")
             String name,
             @RequestParam(value = "email", required = false)
-            @Parameter(description = "Filtra por email que contém o valor")
+            @Parameter(description = "Filters by email containing the value")
             String email,
             @RequestParam(value = "role", required = false)
-            @Parameter(description = "Filtra por Role (e.g., ADMIN, USER)")
+            @Parameter(description = "Filters by Role (e.g., ADMIN, USER)")
             RoleUser role,
             @RequestParam(value = "createAt", required = false)
-            @Parameter(description = "Filtra usuários criados a partir desta data (ISO 8601)")
+            @Parameter(description = "Filters users created from this date onwards (ISO 8601)")
             Instant createAt,
             @RequestParam(value = "updateAt", required = false)
-            @Parameter(description = "Filtra usuários criados até esta data (ISO 8601)")
+            @Parameter(description = "Filters users created up to this date (ISO 8601)")
             Instant updateAt,
             @RequestParam(value = "page", defaultValue = "0")
-            @Parameter(description = "Número da página (inicia em 0)")
+            @Parameter(description = "Page number (starts at 0)")
             int pageNumber,
             @RequestParam(value = "size", defaultValue = "10")
-            @Parameter(description = "Tamanho da página (máx. 50, padrão 10)")
+            @Parameter(description = "Page size (max. 50, default 10)")
             int pageSize
     ){
         var pageUser = new PageUser(pageNumber, pageSize);
