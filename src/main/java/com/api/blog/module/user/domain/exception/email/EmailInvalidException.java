@@ -1,6 +1,8 @@
 package com.api.blog.module.user.domain.exception.email;
 
-public class EmailInvalidException extends RuntimeException {
+import com.api.blog.module.user.domain.exception.UserException;
+
+public class EmailInvalidException extends UserException {
 
   public EmailInvalidException(String message) {
     super(message);

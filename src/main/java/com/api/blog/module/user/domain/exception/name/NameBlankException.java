@@ -1,6 +1,8 @@
 package com.api.blog.module.user.domain.exception.name;
 
-public class NameBlankException extends RuntimeException {
+import com.api.blog.module.user.domain.exception.UserException;
+
+public class NameBlankException extends UserException {
     public NameBlankException(String message) {
         super(message);
     }

@@ -1,6 +1,8 @@
 package com.api.blog.module.user.domain.exception.email;
 
-public class EmailBlankException extends RuntimeException {
+import com.api.blog.module.user.domain.exception.UserException;
+
+public class EmailBlankException extends UserException {
     public EmailBlankException(String message) {
         super(message);
     }
