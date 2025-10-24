@@ -1,6 +1,7 @@
 package com.api.blog.module.user.application.controller;
 
 import com.api.blog.core.UserAuthenticationService;
+import com.api.blog.infrastructure.api.CustomApiResponse;
 import com.api.blog.module.user.application.dto.create.UserCreateRequest;
 import com.api.blog.module.user.application.dto.create.UserCreateResponse;
 import com.api.blog.module.user.application.dto.delete.UserDeleteRequest;
@@ -48,15 +49,16 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully",
+                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserCreateResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content)
     })
-    public ResponseEntity<UserCreateResponse> create(@RequestBody @Valid UserCreateRequest userCreateRequest){
+    public ResponseEntity<CustomApiResponse<UserCreateResponse>> create(@RequestBody @Valid UserCreateRequest userCreateRequest){
         var response = userService.create(userCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "User created successfully", response));
     }
 
     @DeleteMapping
@@ -65,7 +67,9 @@ public class UserController {
             description = "Removes a user from the system. Only the user themselves or an administrator can delete."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "202", description = "User deleted successfully",
+                    // Adaptação: Usa String como o tipo T para a CustomApiResponse<String>
+                    content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
             @ApiResponse(responseCode = "403", description = "No permission to delete this user",
@@ -73,14 +77,15 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
-    public ResponseEntity<?> delete(@RequestBody @Valid UserDeleteRequest userDeleteRequest){
+    public ResponseEntity<CustomApiResponse<String>> delete(@RequestBody @Valid UserDeleteRequest userDeleteRequest){
         long idUserAutenticated = authenticationService.getAuthenticatedUserId();
 
         userService.delete(userDeleteRequest, idUserAutenticated);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body("User deleted with success");
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "User deleted with success", null));
     }
 
+    // --- EDIT ---
     @PatchMapping
     @Operation(
             summary = "Edit user",
@@ -88,6 +93,7 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "User updated successfully",
+                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserEditResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
@@ -98,13 +104,14 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
-    public ResponseEntity<UserEditResponse> edit(@RequestBody @Valid UserEditRequest userEditRequest){
+    public ResponseEntity<CustomApiResponse<UserEditResponse>> edit(@RequestBody @Valid UserEditRequest userEditRequest){
         long idUserAutenticated = authenticationService.getAuthenticatedUserId();
 
         var response = userService.edit(userEditRequest, idUserAutenticated);
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "User updated successfully", response));
     }
+
 
     @GetMapping("/{id}")
     @Operation(
@@ -113,17 +120,20 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User found",
+                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserGetResponse.class))),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content)
     })
-    public ResponseEntity<UserGetResponse> get(
+    public ResponseEntity<CustomApiResponse<UserGetResponse>> get(
             @Parameter(description = "User ID", required = true)
             @PathVariable("id") long id){
+
         var user = userService.get(id);
-        return ResponseEntity.ok(user);
+
+        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.OK.value(), "User found", user));
     }
 
     @GetMapping()
@@ -137,7 +147,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content)
     })
-    public ResponseEntity<List<UserGetResponse>> getAll(
+    public ResponseEntity<CustomApiResponse<List<UserGetResponse>>> getAll(
             @RequestParam(value = "name", required = false)
             @Parameter(description = "Filters by name containing the value")
             String name,
@@ -172,8 +182,7 @@ public class UserController {
                 pageUser.pageSize()
         );
 
-        return ResponseEntity.ok(users);
+        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.OK.value(), "List of users returned successfully", users));
     }
-
 
 }
