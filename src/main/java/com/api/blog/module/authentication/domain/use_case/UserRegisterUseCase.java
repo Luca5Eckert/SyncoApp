@@ -9,9 +9,11 @@ import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.blog.module.user.domain.vo.Email;
 import com.api.blog.module.user.domain.vo.Name;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserRegisterUseCase {
 
@@ -35,19 +37,28 @@ public class UserRegisterUseCase {
      * @return The created user.
      */
     public UserEntity execute(UserRegisterRequest userRegisterRequest) {
+        log.info("User registration attempt for email: {}", userRegisterRequest.email());
 
         Name name = new Name(userRegisterRequest.name());
         Email email = new Email(userRegisterRequest.email());
 
-        if(!passwordValidator.isValid(userRegisterRequest.password())) throw new PasswordNotValidException();
+        if(!passwordValidator.isValid(userRegisterRequest.password())) {
+            log.warn("Registration failed - invalid password for user: {}", userRegisterRequest.email());
+            throw new PasswordNotValidException();
+        }
 
         String password = passwordEncoder.encode(userRegisterRequest.password());
 
         UserEntity user = new UserEntity(name, email, password, RoleUser.USER);
 
-        if(userRepository.existsByEmail(user.getEmail())) throw new EmailNotUniqueException();
+        if(userRepository.existsByEmail(user.getEmail())) {
+            log.warn("Registration failed - email already exists: {}", userRegisterRequest.email());
+            throw new EmailNotUniqueException();
+        }
 
         userRepository.save(user);
+        
+        log.info("User registered successfully: {} with role: {}", user.getEmail(), user.getRoleUser());
 
         return user;
     }

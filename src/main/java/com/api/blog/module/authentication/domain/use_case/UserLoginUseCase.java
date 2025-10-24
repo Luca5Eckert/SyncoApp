@@ -6,11 +6,13 @@ import com.api.blog.module.authentication.application.dto.login.UserLoginRequest
 import com.api.blog.module.authentication.application.dto.login.UserLoginResponse;
 import com.api.blog.module.authentication.domain.exception.AuthenticationValidationException;
 import com.api.blog.module.authentication.domain.mapper.AuthenticationMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserLoginUseCase {
 
@@ -27,15 +29,20 @@ public class UserLoginUseCase {
 
 
     public UserLoginResponse execute(UserLoginRequest userLoginRequest) {
+        log.info("Login attempt for user: {}", userLoginRequest.email());
+        
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLoginRequest.email(), userLoginRequest.password()));
 
         if(!authentication.isAuthenticated()){
+            log.warn("Login failed - authentication not validated for user: {}", userLoginRequest.email());
             throw new AuthenticationValidationException();
         }
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         String token = jwtTokenProvider.generateToken(userDetails.getUsername());
+        
+        log.info("User logged in successfully: {} with role: {}", userDetails.getUsername(), userDetails.getAuthorities());
 
         return authenticationMapper.toLoginResponse(userDetails, token);
     }

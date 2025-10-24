@@ -7,8 +7,10 @@ import com.api.blog.module.user.domain.exception.permission.UserWithoutEditPermi
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.vo.Email;
 import com.api.blog.module.user.domain.vo.Name;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserEditUseCase {
 
@@ -31,14 +33,21 @@ public class UserEditUseCase {
      * @return The user edited
      */
     public UserEntity execute(UserEditRequest userEditRequest, long idUserAutenticated) {
+        log.info("User edit attempt - User ID: {} being edited by authenticated user ID: {}", userEditRequest.id(), idUserAutenticated);
+        
         UserEntity userAuthenticated = userRepository.findById(idUserAutenticated).orElseThrow(() -> new UserNotFoundException(idUserAutenticated));
         UserEntity userEdit = userRepository.findById(userEditRequest.id()).orElseThrow( () -> new UserNotFoundException(userEditRequest.id()));
 
-        if(!canEditUser(userAuthenticated, userEdit) ) throw new UserWithoutEditPermissionException();
+        if(!canEditUser(userAuthenticated, userEdit) ) {
+            log.warn("User edit failed - User ID: {} does not have permission to edit user ID: {}", idUserAutenticated, userEditRequest.id());
+            throw new UserWithoutEditPermissionException();
+        }
 
         editUser(userEdit, userEditRequest);
 
         userRepository.save(userEdit);
+        
+        log.info("User edited successfully - User ID: {} (email: {}) edited by user ID: {}", userEdit.getId(), userEdit.getEmail(), idUserAutenticated);
 
         return userEdit;
 

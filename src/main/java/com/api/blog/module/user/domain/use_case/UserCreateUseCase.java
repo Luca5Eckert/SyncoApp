@@ -8,9 +8,11 @@ import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.blog.module.user.domain.vo.Email;
 import com.api.blog.module.user.domain.vo.Name;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserCreateUseCase {
 
@@ -34,19 +36,28 @@ public class UserCreateUseCase {
      * @return The created user.
      */
     public UserEntity execute(UserCreateRequest userCreateRequest) {
+        log.info("User creation attempt for email: {} with role: {}", userCreateRequest.email(), userCreateRequest.roleUser());
 
         Name name = new Name(userCreateRequest.name());
         Email email = new Email(userCreateRequest.email());
 
-        if(!passwordValidator.isValid(userCreateRequest.password())) throw new PasswordNotValidException();
+        if(!passwordValidator.isValid(userCreateRequest.password())) {
+            log.warn("User creation failed - invalid password for email: {}", userCreateRequest.email());
+            throw new PasswordNotValidException();
+        }
 
         String password = passwordEncoder.encode(userCreateRequest.password());
 
         UserEntity user = new UserEntity(name, email, password, userCreateRequest.roleUser());
 
-        if(userRepository.existsByEmail(user.getEmail())) throw new EmailNotUniqueException();
+        if(userRepository.existsByEmail(user.getEmail())) {
+            log.warn("User creation failed - email already exists: {}", userCreateRequest.email());
+            throw new EmailNotUniqueException();
+        }
 
         userRepository.save(user);
+        
+        log.info("User created successfully: {} with role: {}", user.getEmail(), user.getRoleUser());
 
         return user;
     }
