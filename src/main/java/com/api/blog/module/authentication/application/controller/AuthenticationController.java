@@ -1,5 +1,6 @@
 package com.api.blog.module.authentication.application.controller;
 
+import com.api.blog.infrastructure.api.CustomApiResponse;
 import com.api.blog.module.authentication.application.dto.login.UserLoginRequest;
 import com.api.blog.module.authentication.application.dto.login.UserLoginResponse;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterRequest;
@@ -33,18 +34,30 @@ public class AuthenticationController {
     @PostMapping("/register")
     @Operation(
             summary = "Register new user",
-            description = "Creates a new user in the system with the provided credentials"
+            description = "Creates a new user in the system with the provided credentials. Returns the details of the newly created user."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User created successfully",
-                    content = @Content(schema = @Schema(implementation = UserRegisterResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid data provided",
-                    content = @Content)
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "User created successfully",
+                    content = @Content(schema = @Schema(implementation = UserRegisterResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid data (e.g., missing fields, weak password, or validation error)",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "Email already registered",
+                    content = @Content
+            )
     })
-    public ResponseEntity<UserRegisterResponse> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
+    public ResponseEntity<CustomApiResponse<UserRegisterResponse>> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest){
         var user = authenticationService.register(userRegisterRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "User created successfully", user));
     }
+
 
     @PostMapping("/login")
     @Operation(
@@ -52,14 +65,18 @@ public class AuthenticationController {
             description = "Authenticates a user and returns a JWT token for access to protected endpoints"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "Login successful",
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "Login successful",
                     content = @Content(schema = @Schema(implementation = UserLoginResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Invalid credentials",
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Invalid credentials",
                     content = @Content)
     })
-    public ResponseEntity<UserLoginResponse> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+    public ResponseEntity<CustomApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         var user = authenticationService.login(userLoginRequest);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "Login successful", user));
     }
 
 }

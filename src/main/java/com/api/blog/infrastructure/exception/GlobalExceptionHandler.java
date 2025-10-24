@@ -1,6 +1,6 @@
 package com.api.blog.infrastructure.exception;
 
-import com.api.blog.infrastructure.api.ApiResponse;
+import com.api.blog.infrastructure.api.CustomApiResponse;
 import com.api.blog.module.authentication.domain.exception.AuthenticationException;
 import com.api.blog.module.user.domain.exception.UserException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse<?>> handler(Exception e, HttpServletRequest httpServletRequest){
+    public ResponseEntity<CustomApiResponse<?>> handler(Exception e, HttpServletRequest httpServletRequest){
         String path = httpServletRequest.getRequestURI();
 
         return switch (e) {
             case UserException userException ->
-                    ResponseEntity.ok(ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", userException.getMessage(), path));
+                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", userException.getMessage(), path));
 
             case AuthenticationException authenticationException ->
-                    ResponseEntity.ok(ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", authenticationException.getMessage(), path));
+                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", authenticationException.getMessage(), path));
 
             case RuntimeException runtimeException ->
-                    ResponseEntity.ok(ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", runtimeException.getMessage(), path));
+                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", runtimeException.getMessage(), path));
 
             case null, default ->
-                    ResponseEntity.ok(ApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
+                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
 
         };
 
