@@ -13,7 +13,7 @@ Esta API fornece endpoints para:
 ## 🛠️ Tecnologias e Dependências
 
 ### Stack Principal
-- **Java**: 17
+- **Java**: 22
 - **Spring Boot**: 3.3.0
 - **Spring Security**: Autenticação e autorização
 - **Spring Data JPA**: Persistência de dados
@@ -63,7 +63,7 @@ src/main/java/com/api/blog/
 ## 🚀 Como Rodar o Projeto
 
 ### Pré-requisitos
-- Java 17 ou superior
+- Java 22 ou superior
 - Maven 3.6+
 
 ### Instalação e Execução
