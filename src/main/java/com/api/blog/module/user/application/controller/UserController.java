@@ -49,7 +49,6 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully",
-                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserCreateResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
@@ -68,7 +67,6 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "User deleted successfully",
-                    // Adaptação: Usa String como o tipo T para a CustomApiResponse<String>
                     content = @Content(schema = @Schema(implementation = String.class))),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
@@ -85,7 +83,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "User deleted with success", null));
     }
 
-    // --- EDIT ---
     @PatchMapping
     @Operation(
             summary = "Edit user",
@@ -93,7 +90,6 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "202", description = "User updated successfully",
-                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserEditResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid data provided",
                     content = @Content),
@@ -120,7 +116,6 @@ public class UserController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User found",
-                    // Adaptação: O Schema deve refletir o tipo T dentro da CustomApiResponse<T>
                     content = @Content(schema = @Schema(implementation = UserGetResponse.class))),
             @ApiResponse(responseCode = "401", description = "Not authenticated",
                     content = @Content),
