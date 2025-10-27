@@ -1,10 +1,12 @@
 package com.api.blog.module.authentication.application.controller;
 
+import com.api.blog.core.UserAuthenticationService;
 import com.api.blog.infrastructure.api.CustomApiResponse;
 import com.api.blog.module.authentication.application.dto.login.UserLoginRequest;
 import com.api.blog.module.authentication.application.dto.login.UserLoginResponse;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterRequest;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterResponse;
+import com.api.blog.module.authentication.application.dto.reset_password.UserResetRequest;
 import com.api.blog.module.authentication.domain.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,10 +17,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/blog/auth")
@@ -26,9 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
+    private final UserAuthenticationService userAuthenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService, UserAuthenticationService userAuthenticationService) {
         this.authenticationService = authenticationService;
+        this.userAuthenticationService = userAuthenticationService;
     }
 
     @PostMapping("/register")
@@ -77,6 +78,15 @@ public class AuthenticationController {
     public ResponseEntity<CustomApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         var user = authenticationService.login(userLoginRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "Login successful", user));
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<CustomApiResponse<Void>> resetPassword(@RequestBody @Valid UserResetRequest userResetRequest){
+        long idUser = userAuthenticationService.getAuthenticatedUserId();
+
+        authenticationService.resetPassword(userResetRequest, idUser);
+
+        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
     }
 
 }
