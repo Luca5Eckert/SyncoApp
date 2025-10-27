@@ -53,6 +53,22 @@ public class UserResetPasswordUseCaseTest {
     }
 
     @Test
+    @DisplayName("Should Continue When All Is Correct ")
+    public void shouldContinueWhenAllIsCorrect(){
+
+        // arrange
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(passwordValidator.isValid(any(String.class))).thenReturn(true);
+        when(passwordEncoder.matches(any(String.class), any(String.class))).thenReturn(true);
+        when(passwordEncoder.encode(any(String.class))).thenReturn("encoded");
+
+        // act
+        userResetPasswordUseCase.execute(userResetRequest, userId);
+
+
+    }
+
+    @Test
     @DisplayName("Should Return Exception When Password Is Incorrect")
     public void shouldReturnExceptionWhenPasswordIsIncorrect(){
 
