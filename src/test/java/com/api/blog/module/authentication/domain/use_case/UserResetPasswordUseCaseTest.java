@@ -3,6 +3,7 @@ package com.api.blog.module.authentication.domain.use_case;
 import com.api.blog.module.authentication.application.dto.reset_password.UserResetRequest;
 import com.api.blog.module.authentication.domain.exception.password.PasswordNotMatchesException;
 import com.api.blog.module.user.domain.UserEntity;
+import com.api.blog.module.user.domain.exception.password.PasswordNotValidException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -79,6 +79,23 @@ public class UserResetPasswordUseCaseTest {
         // act and assert
         assertThatThrownBy(() -> userResetPasswordUseCase.execute(userResetRequest, userId))
                 .isExactlyInstanceOf(PasswordNotMatchesException.class);
+
+
+    }
+
+
+    @Test
+    @DisplayName("Should Return Exception When Password Is Invalid")
+    public void shouldReturnExceptionWhenPasswordIsInvalid(){
+
+        // arrange
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(any(String.class), any(String.class))).thenReturn(true);
+        when(passwordValidator.isValid(any(String.class))).thenReturn(false);
+
+        // act and assert
+        assertThatThrownBy(() -> userResetPasswordUseCase.execute(userResetRequest, userId))
+                .isExactlyInstanceOf(PasswordNotValidException.class);
 
 
     }
