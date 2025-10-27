@@ -6,8 +6,6 @@ import com.api.blog.module.user.domain.exception.UserNotFoundException;
 import com.api.blog.module.user.domain.exception.password.PasswordNotValidException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
-import org.passay.PasswordValidator;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +22,16 @@ public class UserResetPasswordUseCase {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Resets the user's password
+     *
+     * <p>First, validates the password's correctness and validity.
+     * The password is then encoded, assigned to the user, and saved
+     * in the database.</p>
+     *
+     * @param userResetRequest the request containing the data for the reset
+     * @param idUser the user's ID
+     */
     public void execute(UserResetRequest userResetRequest, long idUser) {
         var userDetails = userRepository.findById(idUser).orElseThrow( () -> new UserNotFoundException(idUser) );
 
