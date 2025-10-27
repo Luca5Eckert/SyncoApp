@@ -33,7 +33,9 @@ public class UserResetPasswordUseCase {
 
         if(!passwordValidator.isValid(userResetRequest.newPassword())) throw new PasswordNotValidException();
 
-        userDetails.setPassword(userResetRequest.newPassword());
+        String passwordEncoded = passwordEncoder.encode(userResetRequest.newPassword());
+
+        userDetails.setPassword(passwordEncoded);
         userRepository.save(userDetails);
     }
 
