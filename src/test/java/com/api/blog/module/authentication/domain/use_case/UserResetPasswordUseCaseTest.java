@@ -3,6 +3,7 @@ package com.api.blog.module.authentication.domain.use_case;
 import com.api.blog.module.authentication.application.dto.reset_password.UserResetRequest;
 import com.api.blog.module.authentication.domain.exception.password.PasswordNotMatchesException;
 import com.api.blog.module.user.domain.UserEntity;
+import com.api.blog.module.user.domain.enumerator.RoleUser;
 import com.api.blog.module.user.domain.exception.password.PasswordNotValidException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -17,8 +19,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,6 +69,12 @@ public class UserResetPasswordUseCaseTest {
         // act
         userResetPasswordUseCase.execute(userResetRequest, userId);
 
+        // arrange
+        var captor = ArgumentCaptor.forClass(UserEntity.class);
+        verify(userRepository).save(captor.capture());
+
+        var saved = captor.getValue();
+        assertThat(saved).isNotNull();
 
     }
 
