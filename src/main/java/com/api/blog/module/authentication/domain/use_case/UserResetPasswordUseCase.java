@@ -6,6 +6,8 @@ import com.api.blog.module.user.domain.exception.UserNotFoundException;
 import com.api.blog.module.user.domain.exception.password.PasswordNotValidException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import com.api.blog.module.user.domain.validator.PasswordValidatorImpl;
+import org.passay.PasswordValidator;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
