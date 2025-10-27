@@ -113,4 +113,13 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
     }
 
+    @PatchMapping("/password")
+    public ResponseEntity<CustomApiResponse<Void>> resetPassword(@RequestBody @Valid UserResetRequest userResetRequest){
+        long idUser = userAuthenticationService.getAuthenticatedUserId();
+
+        authenticationService.resetPassword(userResetRequest, idUser);
+
+        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
+    }
+
 }
