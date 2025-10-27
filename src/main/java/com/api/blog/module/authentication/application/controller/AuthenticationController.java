@@ -69,11 +69,13 @@ public class AuthenticationController {
             @ApiResponse(
                     responseCode = "202",
                     description = "Login successful",
-                    content = @Content(schema = @Schema(implementation = UserLoginResponse.class))),
+                    content = @Content(schema = @Schema(implementation = UserLoginResponse.class))
+            ),
             @ApiResponse(
                     responseCode = "401",
                     description = "Invalid credentials",
-                    content = @Content)
+                    content = @Content
+            )
     })
     public ResponseEntity<CustomApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         var user = authenticationService.login(userLoginRequest);
@@ -81,6 +83,28 @@ public class AuthenticationController {
     }
 
     @PatchMapping("/password")
+    @Operation (
+            summary = "Reset password",
+            description = "Reset the password of user authenticated"
+    )
+    @ApiResponses(value = {
+
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "Reset executed with success",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The password is incorrect",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "The password is not valid",
+                    content = @Content
+            )
+    })
     public ResponseEntity<CustomApiResponse<Void>> resetPassword(@RequestBody @Valid UserResetRequest userResetRequest){
         long idUser = userAuthenticationService.getAuthenticatedUserId();
 
