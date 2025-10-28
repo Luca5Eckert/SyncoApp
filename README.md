@@ -117,7 +117,7 @@ spring.datasource.password=
 
 Para usar MySQL em produção, atualize `application.properties`:
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/blog_db
+spring.datasource.url=jdbc:mysql://localhost:3306/SyncoAppDb
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 ```
@@ -132,184 +132,6 @@ A documentação interativa está disponível através do Swagger UI:
 - **OpenAPI JSON**: http://localhost:8080/v3/api-docs
 - **OpenAPI YAML**: `docs/openapi.yaml` (arquivo local)
 
-### Endpoints Principais
-
-#### 🔐 Autenticação (`/api/blog/auth`)
-
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| POST | `/api/blog/auth/register` | Registrar novo usuário | Não |
-| POST | `/api/blog/auth/login` | Fazer login | Não |
-
-#### 👥 Usuários (`/api/blog/users`)
-
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| GET | `/api/blog/users` | Listar todos os usuários | Sim |
-| GET | `/api/blog/users/{id}` | Buscar usuário por ID | Sim |
-| POST | `/api/blog/users` | Criar novo usuário | Sim |
-| PATCH | `/api/blog/users` | Editar usuário | Sim |
-| DELETE | `/api/blog/users` | Deletar usuário | Sim |
-
-### Exemplos de Requisições
-
-#### 1. Registrar um novo usuário
-
-```bash
-curl -X POST http://localhost:8080/api/blog/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "João Silva",
-    "email": "joao@example.com",
-    "password": "SenhaForte123!"
-  }'
-```
-
-**Resposta (201 Created)**:
-```json
-{
-  "id": 1,
-  "name": "João Silva",
-  "email": "joao@example.com",
-  "roleUser": "USER"
-}
-```
-
-#### 2. Fazer login
-
-```bash
-curl -X POST http://localhost:8080/api/blog/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "joao@example.com",
-    "password": "SenhaForte123!"
-  }'
-```
-
-**Resposta (202 Accepted)**:
-```json
-{
-  "id": 1,
-  "email": "joao@example.com",
-  "roles": [
-    {
-      "authority": "ROLE_USER"
-    }
-  ],
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-}
-```
-
-#### 3. Listar todos os usuários (autenticado)
-
-```bash
-curl -X GET http://localhost:8080/api/blog/users \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-```
-
-**Resposta (200 OK)**:
-```json
-[
-  {
-    "id": 1,
-    "name": "João Silva",
-    "email": "joao@example.com",
-    "role": "USER",
-    "createAt": "2025-01-15T10:30:00Z",
-    "updateAt": "2025-01-15T10:30:00Z"
-  }
-]
-```
-
-#### 4. Buscar usuário por ID (autenticado)
-
-```bash
-curl -X GET http://localhost:8080/api/blog/users/1 \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-```
-
-#### 5. Criar novo usuário (autenticado)
-
-```bash
-curl -X POST http://localhost:8080/api/blog/users \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Admin User",
-    "email": "admin@example.com",
-    "password": "AdminPass123!",
-    "roleUser": "ADMIN"
-  }'
-```
-
-#### 6. Editar usuário (autenticado)
-
-```bash
-curl -X PATCH http://localhost:8080/api/blog/users \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": 1,
-    "name": "João Silva Santos",
-    "email": "joao.santos@example.com"
-  }'
-```
-
-#### 7. Deletar usuário (autenticado)
-
-```bash
-curl -X DELETE http://localhost:8080/api/blog/users \
-  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
-  -H "Content-Type: application/json" \
-  -d '{
-    "id": 1
-  }'
-```
-
-### Modelos de Dados
-
-#### UserRegisterRequest
-```json
-{
-  "name": "string (max 30)",
-  "email": "string (max 150)",
-  "password": "string (max 180)"
-}
-```
-
-#### UserLoginRequest
-```json
-{
-  "email": "string",
-  "password": "string"
-}
-```
-
-#### UserCreateRequest
-```json
-{
-  "name": "string (max 30)",
-  "email": "string (max 150)",
-  "password": "string (max 180)",
-  "roleUser": "USER | ADMIN"
-}
-```
-
-#### UserEditRequest
-```json
-{
-  "id": "number",
-  "name": "string (max 30)",
-  "email": "string (max 150)"
-}
-```
-
-#### UserDeleteRequest
-```json
-{
-  "id": "number"
-}
-```
 
 ### Códigos de Status HTTP
 
@@ -393,15 +215,6 @@ Contribuições são bem-vindas! Para contribuir:
    Fixes #25
    ```
 
-### Checklist do PR
-
-- [ ] README atualizado (se necessário)
-- [ ] `docs/openapi.yaml` atualizado (se necessário)
-- [ ] Anotações OpenAPI nos controllers
-- [ ] Testes adicionados/atualizados
-- [ ] Build passa sem erros
-- [ ] Código segue os padrões do projeto
-
 ## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.
@@ -409,7 +222,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 ## 📞 Contato
 
 - **GitHub**: [@Luca5Eckert](https://github.com/Luca5Eckert)
-- **Repositório**: [blog-api](https://github.com/Luca5Eckert/blog-api)
+- **Repositório**: [SyncoApp]([https://github.com/Luca5Eckert/blog-api](https://github.com/Luca5Eckert/SyncoApp))
 
 ## 🔗 Links Úteis
 
