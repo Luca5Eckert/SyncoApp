@@ -222,7 +222,7 @@ Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes
 ## 📞 Contato
 
 - **GitHub**: [@Luca5Eckert](https://github.com/Luca5Eckert)
-- **Repositório**: [SyncoApp]([https://github.com/Luca5Eckert/blog-api](https://github.com/Luca5Eckert/SyncoApp))
+- **Repositório**: [SyncoApp](https://github.com/Luca5Eckert/SyncoApp)
 
 ## 🔗 Links Úteis
 
