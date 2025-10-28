@@ -1,6 +1,8 @@
-# Blog API
+# Synco App
 
-API REST para gerenciamento de blog com autenticação JWT, desenvolvida com Java Spring Boot.
+Uma API REST desenvolvida em Java Spring Boot para centralizar a gestão de informações em ambientes de aprendizagem.
+
+O Synco App nasceu para resolver a comunicação deficiente entre a esfera administrativa (coordenação/professores) e os alunos. Ao criar um hub unificado de informações, a plataforma garante que avisos, horários e feedbacks sejam distribuídos de forma eficiente, servindo como uma fonte única de verdade para toda a comunidade acadêmica.
 
 ## 📋 Visão Geral
 
