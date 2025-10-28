@@ -113,35 +113,4 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
     }
 
-    @PatchMapping("/password")
-    @Operation (
-            summary = "Reset password",
-            description = "Reset the password of user authenticated"
-    )
-    @ApiResponses(value = {
-
-            @ApiResponse(
-                    responseCode = "202",
-                    description = "Reset executed with success",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "The password is incorrect",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "The password is not valid",
-                    content = @Content
-            )
-    })
-    public ResponseEntity<CustomApiResponse<Void>> resetPassword(@RequestBody @Valid UserResetRequest userResetRequest){
-        long idUser = userAuthenticationService.getAuthenticatedUserId();
-
-        authenticationService.resetPassword(userResetRequest, idUser);
-
-        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
-    }
-
 }

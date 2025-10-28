@@ -69,7 +69,7 @@ public class UserResetPasswordUseCaseTest {
         // act
         userResetPasswordUseCase.execute(userResetRequest, userId);
 
-        // arrange
+        // assert
         var captor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository).save(captor.capture());
 
