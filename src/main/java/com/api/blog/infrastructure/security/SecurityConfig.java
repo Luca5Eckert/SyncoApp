@@ -24,8 +24,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("api/blog/auth/login").permitAll();
-                    auth.requestMatchers("api/blog/auth/register").permitAll();
+                    auth.requestMatchers("/api/blog/auth/login").permitAll();
+                    auth.requestMatchers("/api/blog/auth/register").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)

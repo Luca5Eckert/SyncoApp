@@ -79,7 +79,7 @@ public class AuthenticationController {
     })
     public ResponseEntity<CustomApiResponse<UserLoginResponse>> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         var user = authenticationService.login(userLoginRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "Login successful", user));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.CREATED.value(), "Login successful", user));
     }
 
     @PatchMapping("/password")
@@ -110,7 +110,7 @@ public class AuthenticationController {
 
         authenticationService.resetPassword(userResetRequest, idUser);
 
-        return ResponseEntity.ok(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(HttpStatus.ACCEPTED.value(), "Reset executed with success"));
     }
 
 }
