@@ -18,16 +18,16 @@ public class GlobalExceptionHandler {
 
         return switch (e) {
             case UserException userException ->
-                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", userException.getMessage(), path));
+                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", userException.getMessage(), path));
 
             case AuthenticationException authenticationException ->
-                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", authenticationException.getMessage(), path));
+                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", authenticationException.getMessage(), path));
 
             case RuntimeException runtimeException ->
-                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", runtimeException.getMessage(), path));
+                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", runtimeException.getMessage(), path));
 
             case null, default ->
-                    ResponseEntity.ok(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
+                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
 
         };
 

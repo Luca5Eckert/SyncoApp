@@ -1,7 +1,10 @@
 package com.api.blog.module.authentication.application.controller;
 
+import com.api.blog.infrastructure.security.jwt.JwtTokenProvider;
 import com.api.blog.module.authentication.application.dto.login.UserLoginRequest;
 import com.api.blog.module.authentication.application.dto.register.UserRegisterRequest;
+import com.api.blog.module.authentication.application.dto.reset_password.UserResetRequest;
+import com.api.blog.module.authentication.domain.use_case.UserResetPasswordUseCase;
 import com.api.blog.module.user.domain.UserEntity;
 import com.api.blog.module.user.domain.enumerator.RoleUser;
 import com.api.blog.module.user.domain.vo.Email;
@@ -21,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,34 +46,47 @@ class AuthenticationControllerIntegrationTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     private UserRegisterRequest registerRequest;
     private UserLoginRequest loginRequest;
+    private UserResetRequest resetRequest;
+
+    private String token;
 
     @BeforeEach
     void setup() {
+        String email = "john@example.com";
+
         registerRequest = new UserRegisterRequest(
             "John Doe",
-            "john@example.com",
+                email,
             "Strong#Pass123"
+        );
+        loginRequest = new UserLoginRequest(
+                email,
+            "Strong#Pass123"
+        );
+        resetRequest = new UserResetRequest(
+                "Strong#Pass123",
+                "Strong#Pass1233"
         );
 
-        loginRequest = new UserLoginRequest(
-            "john@example.com",
-            "Strong#Pass123"
-        );
+        token = jwtTokenProvider.generateToken(email);
     }
 
     @DisplayName("POST /api/blog/auth/register - Should register user successfully")
     @Test
     void shouldRegisterUserSuccessfully() throws Exception {
         mockMvc.perform(post("/api/blog/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(registerRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerRequest)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("John Doe"))
-                .andExpect(jsonPath("$.email").value("john@example.com"))
-                .andExpect(jsonPath("$.roleUser").value("USER"))
-                .andExpect(jsonPath("$.id").isNumber());
+                .andExpect(jsonPath("$.data.name").value(registerRequest.name()))
+                .andExpect(jsonPath("$.data.email").value(registerRequest.email()))
+                .andExpect(jsonPath("$.data.roleUser").value("USER"))
+                .andExpect(jsonPath("$.data.id").isNumber());
     }
 
     @DisplayName("POST /api/blog/auth/register - Should fail when email already exists")
@@ -140,9 +157,9 @@ class AuthenticationControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.email").value("john@example.com"))
-                .andExpect(jsonPath("$.token").isString())
-                .andExpect(jsonPath("$.roles").isArray());
+                .andExpect(jsonPath("$.data.email").value("john@example.com"))
+                .andExpect(jsonPath("$.data.token").isString())
+                .andExpect(jsonPath("$.data.roles").isArray());
     }
 
     @DisplayName("POST /api/blog/auth/login - Should fail with incorrect password")
@@ -179,4 +196,24 @@ class AuthenticationControllerIntegrationTest {
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isBadRequest());
     }
+
+    @DisplayName("PATCH /api/blog/auth/password - Should fail with non-existent user")
+    @Test
+    void shouldResetPasswordWithSuccess() throws Exception {
+        var user = new UserEntity(
+                new Name("John Doe"),
+                new Email("john@example.com"),
+                passwordEncoder.encode("Strong#Pass123"),
+                RoleUser.USER
+        );
+        entityManager.persist(user);
+
+        mockMvc.perform(patch("/api/blog/auth/password")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(resetRequest)))
+                .andExpect(status().isAccepted());
+    }
+
+
 }
