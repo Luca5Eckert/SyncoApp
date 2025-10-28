@@ -1,8 +1,18 @@
 # Synco App
 
-Uma API REST desenvolvida em Java Spring Boot para centralizar a gestão de informações em ambientes de aprendizagem.
+O Synco App é uma API REST que atua como o backend de uma plataforma de gestão acadêmica, focada em fortalecer a comunicação e centralizar dados em ambientes de aprendizagem.
 
-O Synco App nasceu para resolver a comunicação deficiente entre a esfera administrativa (coordenação/professores) e os alunos. Ao criar um hub unificado de informações, a plataforma garante que avisos, horários e feedbacks sejam distribuídos de forma eficiente, servindo como uma fonte única de verdade para toda a comunidade acadêmica.
+## 🎯 O Problema
+A comunicação entre coordenação e alunos é frequentemente fragmentada. Avisos se perdem em grupos de WhatsApp, e-mails não são lidos e informações cruciais (como horários de laboratório ou controle de faltas) não possuem um local oficial. Isso gera ruído e insegurança para os estudantes.
+
+## 💡 A Solução
+Esta API cria um ponto central de informação (Single Source of Truth) onde todas as interações são registradas e disponibilizadas de forma organizada. Ela supre a necessidade de um canal de comunicação robusto e confiável.
+
+## 🚀 Funcionalidades Planejadas
+* **Gestão de Faltas:** Permite ao professor registrar e ao aluno consultar suas ausências.
+* **Feedback de Ambiente:** Um canal para o representante de turma registrar a qualidade do ambiente de aula.
+* **Mural de Avisos:** Um ponto central para comunicados oficiais da coordenação.
+* **Repositório de Informações:** Local para consulta de horários, intervalos e calendários.
 
 ## 📋 Visão Geral
 
