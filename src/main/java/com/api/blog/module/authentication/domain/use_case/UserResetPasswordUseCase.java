@@ -44,6 +44,7 @@ public class UserResetPasswordUseCase {
         String passwordEncoded = passwordEncoder.encode(userResetRequest.newPassword());
 
         userDetails.setPassword(passwordEncoded);
+
         userRepository.save(userDetails);
     }
 
