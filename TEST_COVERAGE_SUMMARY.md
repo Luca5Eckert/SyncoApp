@@ -1,7 +1,7 @@
-# Test Coverage Summary - Blog API
+# Test Coverage Summary - Synco API
 
 ## Overview
-This document summarizes the comprehensive test suite implemented for the Blog API project, covering unit tests, repository tests, and integration tests.
+This document summarizes the comprehensive test suite implemented for the Synco API project, covering unit tests, repository tests, and integration tests.
 
 ## Test Statistics
 - **Total Tests**: 50
@@ -69,33 +69,33 @@ This document summarizes the comprehensive test suite implemented for the Blog A
 
 #### AuthenticationControllerIntegrationTest (7 tests)
 **Registration Endpoint Tests**
-- ✅ `shouldRegisterUserSuccessfully` - POST /api/blog/auth/register with valid data
+- ✅ `shouldRegisterUserSuccessfully` - POST /api/auth/register with valid data
 - ✅ `shouldFailRegisterWhenEmailExists` - Duplicate email handling
 - ✅ `shouldFailRegisterWithWeakPassword` - Password strength validation
 - ✅ `shouldFailRegisterWithInvalidEmail` - Email format validation
 
 **Login Endpoint Tests**
-- ✅ `shouldLoginSuccessfully` - POST /api/blog/auth/login with valid credentials
+- ✅ `shouldLoginSuccessfully` - POST /api/auth/login with valid credentials
 - ✅ `shouldFailLoginWithIncorrectPassword` - Wrong password handling
 - ✅ `shouldFailLoginWithNonExistentUser` - Non-existent user handling
 
 #### UserControllerIntegrationTest (11 tests)
 **Create User Tests**
-- ✅ `shouldCreateUserSuccessfully` - POST /api/blog/users with admin token
+- ✅ `shouldCreateUserSuccessfully` - POST /api/users with admin token
 - ✅ `shouldCreateUserWithAuthentication` - POST with user token
 
 **Get User Tests**
-- ✅ `shouldGetUserById` - GET /api/blog/users/{id}
+- ✅ `shouldGetUserById` - GET /api/users/{id}
 - ✅ `shouldFailGetUserWhenNotFound` - Not found handling
-- ✅ `shouldGetAllUsers` - GET /api/blog/users
+- ✅ `shouldGetAllUsers` - GET /api/users
 
 **Edit User Tests**
-- ✅ `shouldEditUserAsAdmin` - PATCH /api/blog/users by admin
-- ✅ `shouldEditOwnProfile` - PATCH /api/blog/users for self
+- ✅ `shouldEditUserAsAdmin` - PATCH /api/users by admin
+- ✅ `shouldEditOwnProfile` - PATCH /api/users for self
 - ✅ `shouldFailEditOtherUserAsRegularUser` - Permission validation
 
 **Delete User Tests**
-- ✅ `shouldDeleteUserAsAdmin` - DELETE /api/blog/users by admin
+- ✅ `shouldDeleteUserAsAdmin` - DELETE /api/users by admin
 - ✅ `shouldFailDeleteOtherUserAsRegularUser` - Permission validation
 - ✅ `shouldFailDeleteWhenUserNotFound` - Not found handling
 
