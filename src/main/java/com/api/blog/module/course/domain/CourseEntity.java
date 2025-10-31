@@ -10,7 +10,7 @@ public class CourseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final long id;
+    private long id;
 
     private String name;
 
@@ -20,7 +20,6 @@ public class CourseEntity {
     private List<ClassEntity> classEntities;
 
     public CourseEntity() {
-        this.id = -1;
     }
 
     public CourseEntity(long id, String name, String acronym) {
