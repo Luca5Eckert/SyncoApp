@@ -14,8 +14,8 @@ public class CourseRepositoryAdapter implements CourseRepository {
     }
 
     @Override
-    public boolean existByNameOrAcronym(String name, String acronym) {
-        return courseRepositoryJpa.existsByNameOrAcroym(name, acronym);
+    public boolean existsByNameOrAcronym(String name, String acronym) {
+        return courseRepositoryJpa.existsByNameOrAcronym(name, acronym);
     }
 
     @Override

@@ -48,14 +48,14 @@ public class CreateCourseUseCase {
     public CourseEntity execute(CreateCourseRequest createCourseRequest, long idUser) {
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
 
-        if (hasPermission(user)) throw new UserWithoutCreateCoursePermissionException();
+        if (!hasPermission(user)) throw new UserWithoutCreateCoursePermissionException();
 
         CourseEntity course = new CourseEntity(
                 createCourseRequest.name(),
                 createCourseRequest.acronym()
         );
 
-        if(courseRepository.existByNameOrAcronym(course.getName(), course.getAcronym())){
+        if(courseRepository.existsByNameOrAcronym(course.getName(), course.getAcronym())){
             throw new CourseNotUniqueException();
         }
 

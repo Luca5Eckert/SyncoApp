@@ -7,6 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CourseRepositoryJpa extends JpaRepository<CourseEntity, Long> {
 
-    boolean existsByNameOrAcroym(String name, String acronym);
-
+    boolean existsByNameOrAcronym(String name, String acronym);
 }
