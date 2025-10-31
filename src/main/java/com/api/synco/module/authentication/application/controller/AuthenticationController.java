@@ -20,7 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/blog/auth")
+@RequestMapping("/api/auth")
 @Tag(name = "Authentication", description = "Endpoints for user registration and login")
 public class AuthenticationController {
 

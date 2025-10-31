@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/synco/app/courses")
+@RequestMapping("/api/courses")
 public class CourseController {
 
     private final UserAuthenticationService authenticationService;

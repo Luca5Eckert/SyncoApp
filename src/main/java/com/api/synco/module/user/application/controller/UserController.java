@@ -29,7 +29,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Controller
-@RequestMapping("/synco/app/users")
+@RequestMapping("/api/users")
 @Tag(name = "Users", description = "Endpoints for user management")
 @SecurityRequirement(name = "bearer-jwt")
 public class UserController {
