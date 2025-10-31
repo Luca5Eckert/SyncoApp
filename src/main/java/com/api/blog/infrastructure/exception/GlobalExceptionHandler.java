@@ -12,30 +12,32 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<CustomApiResponse<?>> handlerUserException(UserException e, HttpServletRequest httpServletRequest){
+        String path = httpServletRequest.getRequestURI();
+
+        return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", e.getMessage(), path));
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<CustomApiResponse<?>> handlerAuthenticationException(AuthenticationException e, HttpServletRequest httpServletRequest){
+        String path = httpServletRequest.getRequestURI();
+
+        return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", e.getMessage(), path));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<CustomApiResponse<?>> handlerUserException(RuntimeException e, HttpServletRequest httpServletRequest){
+        String path = httpServletRequest.getRequestURI();
+
+        return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", e.getMessage(), path));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomApiResponse<?>> handler(Exception e, HttpServletRequest httpServletRequest){
         String path = httpServletRequest.getRequestURI();
 
-        return switch (e) {
-            case UserException userException ->
-                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", userException.getMessage(), path));
-
-            case AuthenticationException authenticationException ->
-                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "AUTHENTICATION_EXCEPTION", authenticationException.getMessage(), path));
-
-            case RuntimeException runtimeException ->
-                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "RUNTIME_EXCEPTION", runtimeException.getMessage(), path));
-
-            case null, default ->
-                    ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
-
-        };
-
-
+        return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "EXCEPTION", "Generic error", path));
     }
-
-
-
-
 
 }
