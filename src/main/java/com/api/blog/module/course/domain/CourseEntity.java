@@ -1,25 +1,32 @@
 package com.api.blog.module.course.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.api.blog.module.class_entity.domain.ClassEntity;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class CourseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private final long id;
 
     private String name;
 
     private String acronym;
 
-    public CourseEntity(String acronym, String name, long id) {
-        this.acronym = acronym;
-        this.name = name;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<ClassEntity> classEntities;
+
+    public CourseEntity() {
+        this.id = -1;
+    }
+
+    public CourseEntity(long id, String name, String acronym) {
         this.id = id;
+        this.name = name;
+        this.acronym = acronym;
     }
 
     public long getId() {
@@ -40,6 +47,14 @@ public class CourseEntity {
 
     public void setAcronym(String acronym) {
         this.acronym = acronym;
+    }
+
+    public List<ClassEntity> getClassEntities() {
+        return classEntities;
+    }
+
+    public void setClassEntities(List<ClassEntity> classEntities) {
+        this.classEntities = classEntities;
     }
 
 }
