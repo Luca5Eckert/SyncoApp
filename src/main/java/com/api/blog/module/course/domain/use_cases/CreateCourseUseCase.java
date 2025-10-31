@@ -36,7 +36,7 @@ public class CreateCourseUseCase {
      * </p>
      *
      * @param createCourseRequest Request containg the data for create a new course
-     * @param idUser The id of User who wants create a course
+     * @param idUser The id of User who wants to create a course
      *
      * @throws UserNotFoundException If the user is not found
      * @throws UserWithoutCreateCoursePermissionException If the user don't have permission to create the course
@@ -67,7 +67,7 @@ public class CreateCourseUseCase {
     /**
      * Verify if the user have permission to create a course
      *
-     * @param user The user who will be verify
+     * @param user The user who will be verified
      * @return {@code True} if the user have permission, {@code False} if the user don't have permission
      */
     private boolean hasPermission(UserEntity user) {
