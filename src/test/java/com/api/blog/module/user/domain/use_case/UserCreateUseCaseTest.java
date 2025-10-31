@@ -73,6 +73,7 @@ class UserCreateUseCaseTest {
         var captor = ArgumentCaptor.forClass(UserEntity.class);
         verify(userRepository).save(captor.capture());
         var saved = captor.getValue();
+        assertThat(saved).isNotNull();
         assertThat(saved.getName()).isEqualTo(user.getName());
         assertThat(saved.getEmail()).isEqualTo(user.getEmail());
         assertThat(saved.getRole()).isEqualTo(user.getRole());
