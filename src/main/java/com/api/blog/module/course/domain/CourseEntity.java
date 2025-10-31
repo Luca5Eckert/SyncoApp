@@ -10,7 +10,7 @@ public class CourseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private final long id;
 
     private String name;
 
@@ -20,6 +20,7 @@ public class CourseEntity {
     private List<ClassEntity> classEntities;
 
     public CourseEntity() {
+        this.id = -1;
     }
 
     public CourseEntity(long id, String name, String acronym) {
@@ -27,12 +28,6 @@ public class CourseEntity {
         this.name = name;
         this.acronym = acronym;
     }
-
-    public CourseEntity(String name, String acronym) {
-        this.name = name;
-        this.acronym = acronym;
-    }
-
 
     public long getId() {
         return id;
