@@ -75,10 +75,10 @@ class AuthenticationControllerIntegrationTest {
         token = jwtTokenProvider.generateToken(email);
     }
 
-    @DisplayName("POST /api/blog/auth/register - Should register user successfully")
+    @DisplayName("POST /api/auth/register - Should register user successfully")
     @Test
     void shouldRegisterUserSuccessfully() throws Exception {
-        mockMvc.perform(post("/api/blog/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registerRequest)))
                 .andExpect(status().isCreated())
@@ -88,7 +88,7 @@ class AuthenticationControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.id").isNumber());
     }
 
-    @DisplayName("POST /api/blog/auth/register - Should fail when email already exists")
+    @DisplayName("POST /api/auth/register - Should fail when email already exists")
     @Test
     void shouldFailRegisterWhenEmailExists() throws Exception {
         // Arrange - create existing user
@@ -102,13 +102,13 @@ class AuthenticationControllerIntegrationTest {
         entityManager.flush();
 
         // Act & Assert
-        mockMvc.perform(post("/api/blog/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(registerRequest)))
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("POST /api/blog/auth/register - Should fail with weak password")
+    @DisplayName("POST /api/auth/register - Should fail with weak password")
     @Test
     void shouldFailRegisterWithWeakPassword() throws Exception {
         var weakPasswordRequest = new UserRegisterRequest(
@@ -117,13 +117,13 @@ class AuthenticationControllerIntegrationTest {
             "weak"
         );
 
-        mockMvc.perform(post("/api/blog/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(weakPasswordRequest)))
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("POST /api/blog/auth/register - Should fail with invalid email")
+    @DisplayName("POST /api/auth/register - Should fail with invalid email")
     @Test
     void shouldFailRegisterWithInvalidEmail() throws Exception {
         var invalidEmailRequest = new UserRegisterRequest(
@@ -132,13 +132,13 @@ class AuthenticationControllerIntegrationTest {
             "Strong#Pass123"
         );
 
-        mockMvc.perform(post("/api/blog/auth/register")
+        mockMvc.perform(post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidEmailRequest)))
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("POST /api/blog/auth/login - Should login successfully with valid credentials")
+    @DisplayName("POST /api/auth/login - Should login successfully with valid credentials")
     @Test
     void shouldLoginSuccessfully() throws Exception {
         // Arrange - create user first
@@ -152,7 +152,7 @@ class AuthenticationControllerIntegrationTest {
         entityManager.flush();
 
         // Act & Assert
-        mockMvc.perform(post("/api/blog/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isAccepted())
@@ -161,7 +161,7 @@ class AuthenticationControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.roles").isArray());
     }
 
-    @DisplayName("POST /api/blog/auth/login - Should fail with incorrect password")
+    @DisplayName("POST /api/auth/login - Should fail with incorrect password")
     @Test
     void shouldFailLoginWithIncorrectPassword() throws Exception {
         // Arrange - create user first
@@ -180,23 +180,23 @@ class AuthenticationControllerIntegrationTest {
         );
 
         // Act & Assert - Spring Security returns 400 Bad Request for bad credentials
-        mockMvc.perform(post("/api/blog/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(wrongPasswordRequest)))
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("POST /api/blog/auth/login - Should fail with non-existent user")
+    @DisplayName("POST /api/auth/login - Should fail with non-existent user")
     @Test
     void shouldFailLoginWithNonExistentUser() throws Exception {
         // Spring Security returns 400 Bad Request for bad credentials
-        mockMvc.perform(post("/api/blog/auth/login")
+        mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(loginRequest)))
                 .andExpect(status().isBadRequest());
     }
 
-    @DisplayName("PATCH /api/blog/auth/password - Should fail with non-existent user")
+    @DisplayName("PATCH /api/auth/password - Should fail with non-existent user")
     @Test
     void shouldResetPasswordWithSuccess() throws Exception {
         var user = new UserEntity(
@@ -207,7 +207,7 @@ class AuthenticationControllerIntegrationTest {
         );
         entityManager.persist(user);
 
-        mockMvc.perform(patch("/api/blog/auth/password")
+        mockMvc.perform(patch("/api/auth/password")
                         .header("Authorization", "Bearer " + token)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(resetRequest)))

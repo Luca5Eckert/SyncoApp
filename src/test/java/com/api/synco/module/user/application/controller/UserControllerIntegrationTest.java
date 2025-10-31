@@ -80,7 +80,7 @@ class UserControllerIntegrationTest {
         userToken = jwtTokenProvider.generateToken(regularUser.getEmail().address());
     }
 
-    @DisplayName("POST /api/blog/users - Should create user successfully with authentication")
+    @DisplayName("POST /api/users - Should create user successfully with authentication")
     @Test
     void shouldCreateUserSuccessfully() throws Exception {
         var createRequest = new UserCreateRequest(
@@ -90,7 +90,7 @@ class UserControllerIntegrationTest {
             RoleUser.USER
         );
 
-        mockMvc.perform(post("/api/blog/users")
+        mockMvc.perform(post("/api/users")
                 .header("Authorization", "Bearer " + adminToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createRequest)))
@@ -100,7 +100,7 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.roleUser").value("USER"));
     }
 
-    @DisplayName("POST /api/blog/users - Should create user with authentication")
+    @DisplayName("POST /api/users - Should create user with authentication")
     @Test
     void shouldCreateUserWithAuthentication() throws Exception {
         var createRequest = new UserCreateRequest(
@@ -111,7 +111,7 @@ class UserControllerIntegrationTest {
         );
 
         // Create user with proper authentication token
-        mockMvc.perform(post("/api/blog/users")
+        mockMvc.perform(post("/api/users")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(createRequest)))
@@ -120,10 +120,10 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.email").value("another@example.com"));
     }
 
-    @DisplayName("GET /api/blog/users/{id} - Should get user by ID")
+    @DisplayName("GET /api/users/{id} - Should get user by ID")
     @Test
     void shouldGetUserById() throws Exception {
-        mockMvc.perform(get("/api/blog/users/" + regularUser.getId())
+        mockMvc.perform(get("/api/users/" + regularUser.getId())
                 .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.name").value("Regular User"))
@@ -131,19 +131,19 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.role").value("USER"));
     }
 
-    @DisplayName("GET /api/blog/users/{id} - Should fail when user not found")
+    @DisplayName("GET /api/users/{id} - Should fail when user not found")
     @Test
     void shouldFailGetUserWhenNotFound() throws Exception {
         // The actual status code may be 400 or 404 depending on exception handling
-        mockMvc.perform(get("/api/blog/users/99999")
+        mockMvc.perform(get("/api/users/99999")
                 .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("GET /api/blog/users - Should get all users")
+    @DisplayName("GET /api/users - Should get all users")
     @Test
     void shouldGetAllUsers() throws Exception {
-        mockMvc.perform(get("/api/blog/users")
+        mockMvc.perform(get("/api/users")
                 .header("Authorization", "Bearer " + userToken))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data", hasSize(2)))
@@ -151,7 +151,7 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.[1].name").exists());
     }
 
-    @DisplayName("PATCH /api/blog/users - Admin should edit any user")
+    @DisplayName("PATCH /api/users - Admin should edit any user")
     @Test
     void shouldEditUserAsAdmin() throws Exception {
         var editRequest = new UserEditRequest(
@@ -160,7 +160,7 @@ class UserControllerIntegrationTest {
             "updated@example.com"
         );
 
-        mockMvc.perform(patch("/api/blog/users")
+        mockMvc.perform(patch("/api/users")
                 .header("Authorization", "Bearer " + adminToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(editRequest)))
@@ -169,7 +169,7 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.email").value("updated@example.com"));
     }
 
-    @DisplayName("PATCH /api/blog/users - User should edit their own profile")
+    @DisplayName("PATCH /api/users - User should edit their own profile")
     @Test
     void shouldEditOwnProfile() throws Exception {
         var editRequest = new UserEditRequest(
@@ -178,7 +178,7 @@ class UserControllerIntegrationTest {
             "selfupdated@example.com"
         );
 
-        mockMvc.perform(patch("/api/blog/users")
+        mockMvc.perform(patch("/api/users")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(editRequest)))
@@ -187,7 +187,7 @@ class UserControllerIntegrationTest {
                 .andExpect(jsonPath("$.data.email").value("selfupdated@example.com"));
     }
 
-    @DisplayName("PATCH /api/blog/users - Regular user should not edit other users")
+    @DisplayName("PATCH /api/users - Regular user should not edit other users")
     @Test
     void shouldFailEditOtherUserAsRegularUser() throws Exception {
         var editRequest = new UserEditRequest(
@@ -197,45 +197,45 @@ class UserControllerIntegrationTest {
         );
 
         // Application returns 400 for permission denied scenarios
-        mockMvc.perform(patch("/api/blog/users")
+        mockMvc.perform(patch("/api/users")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(editRequest)))
                 .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("DELETE /api/blog/users - Admin should delete any user")
+    @DisplayName("DELETE /api/users - Admin should delete any user")
     @Test
     void shouldDeleteUserAsAdmin() throws Exception {
         var deleteRequest = new UserDeleteRequest(regularUser.getId());
 
-        mockMvc.perform(delete("/api/blog/users")
+        mockMvc.perform(delete("/api/users")
                 .header("Authorization", "Bearer " + adminToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(deleteRequest)))
                 .andExpect(status().isAccepted());
     }
 
-    @DisplayName("DELETE /api/blog/users - Regular user should not delete other users")
+    @DisplayName("DELETE /api/users - Regular user should not delete other users")
     @Test
     void shouldFailDeleteOtherUserAsRegularUser() throws Exception {
         var deleteRequest = new UserDeleteRequest(adminUser.getId());
 
         // Application returns 400 for permission denied scenarios
-        mockMvc.perform(delete("/api/blog/users")
+        mockMvc.perform(delete("/api/users")
                 .header("Authorization", "Bearer " + userToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(deleteRequest)))
                 .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("DELETE /api/blog/users - Should fail when user not found")
+    @DisplayName("DELETE /api/users - Should fail when user not found")
     @Test
     void shouldFailDeleteWhenUserNotFound() throws Exception {
         var deleteRequest = new UserDeleteRequest(99999L);
 
         // Application returns 400 for not found scenarios
-        mockMvc.perform(delete("/api/blog/users")
+        mockMvc.perform(delete("/api/users")
                 .header("Authorization", "Bearer " + adminToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(deleteRequest)))
