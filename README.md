@@ -1,6 +1,6 @@
-# Synco App
+# Synco Api
 
-O Synco App é uma API REST que atua como o backend de uma plataforma de gestão acadêmica, focada em fortalecer a comunicação e centralizar dados em ambientes de aprendizagem.
+O Synco Api é uma API REST que atua como o backend de uma plataforma de gestão acadêmica, focada em fortalecer a comunicação e centralizar dados em ambientes de aprendizagem.
 
 ## 🎯 O Problema
 A comunicação entre coordenação e alunos é frequentemente fragmentada. Avisos se perdem em grupos de WhatsApp, e-mails não são lidos e informações cruciais (como horários de laboratório ou controle de faltas) não possuem um local oficial. Isso gera ruído e insegurança para os estudantes.
@@ -48,7 +48,7 @@ Esta API fornece endpoints para:
 O projeto segue uma arquitetura em camadas com separação de responsabilidades:
 
 ```
-src/main/java/com/api/blog/
+src/main/java/com/api/synco/
 ├── config/                      # Configurações gerais (OpenAPI, etc)
 ├── core/                        # Serviços centrais (autenticação)
 └── module/                      # Módulos de domínio
@@ -82,8 +82,8 @@ src/main/java/com/api/blog/
 
 1. **Clone o repositório**:
    ```bash
-   git clone https://github.com/Luca5Eckert/blog-api.git
-   cd blog-api
+   git clone https://github.com/Luca5Eckert/synco-api.git
+   cd synco-api
    ```
 
 2. **Build do projeto**:
@@ -98,7 +98,7 @@ src/main/java/com/api/blog/
    
    Ou execute o JAR gerado:
    ```bash
-   java -jar target/blog-0.0.1-SNAPSHOT.jar
+   java -jar target/synco-0.0.1-SNAPSHOT.jar
    ```
 
 4. **Acessar a aplicação**:
