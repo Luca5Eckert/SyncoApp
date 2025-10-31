@@ -27,7 +27,7 @@ public class UserCreateUseCase {
     /**
      * Method responsible for executing the use case.
      *
-     * <p>This method will validate the name, email, and password. After validation,
+     * <p>This method validates the name, email, and password. After validation,
      * the user will be saved in the database.</p>
      *
      * @param userCreateRequest Request with user data.
