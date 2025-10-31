@@ -18,8 +18,8 @@ public class CourseService {
         this.createCourseUseCase = createCourseUseCase;
     }
 
-    public CreateCourseResponse create(CreateCourseRequest createCourseRequest) {
-        var course = createCourseUseCase.execute(createCourseRequest);
+    public CreateCourseResponse create(CreateCourseRequest createCourseRequest, long idUser) {
+        var course = createCourseUseCase.execute(createCourseRequest, idUser);
 
         return courseMapper.toCreateResponse(course);
     }

@@ -28,6 +28,12 @@ public class CourseEntity {
         this.acronym = acronym;
     }
 
+    public CourseEntity(String name, String acronym) {
+        this.name = name;
+        this.acronym = acronym;
+    }
+
+
     public long getId() {
         return id;
     }
