@@ -48,11 +48,17 @@ public class UserController {
             description = "Creates a new user in the system. Requires authentication."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "User created successfully",
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "User created successfully",
                     content = @Content(schema = @Schema(implementation = UserCreateResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid data provided",
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid data provided",
                     content = @Content),
-            @ApiResponse(responseCode = "401", description = "Not authenticated",
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Not authenticated",
                     content = @Content)
     })
     public ResponseEntity<CustomApiResponse<UserCreateResponse>> create(@RequestBody @Valid UserCreateRequest userCreateRequest){
@@ -66,13 +72,21 @@ public class UserController {
             description = "Removes a user from the system. Only the user themselves or an administrator can delete."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "202", description = "User deleted successfully",
+            @ApiResponse(
+                    responseCode = "202",
+                    description = "User deleted successfully",
                     content = @Content(schema = @Schema(implementation = String.class))),
-            @ApiResponse(responseCode = "401", description = "Not authenticated",
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Not authenticated",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "No permission to delete this user",
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "No permission to delete this user",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "User not found",
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "User not found",
                     content = @Content)
     })
     public ResponseEntity<CustomApiResponse<String>> delete(@RequestBody @Valid UserDeleteRequest userDeleteRequest){
