@@ -1,5 +1,6 @@
 package com.api.blog.infrastructure.persistence.course.repository;
 
+import com.api.blog.module.course.domain.CourseEntity;
 import com.api.blog.module.course.domain.port.CourseRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +11,15 @@ public class CourseRepositoryAdapter implements CourseRepository {
 
     public CourseRepositoryAdapter(CourseRepositoryJpa courseRepositoryJpa) {
         this.courseRepositoryJpa = courseRepositoryJpa;
+    }
+
+    @Override
+    public boolean existByNameOrAcronym(String name, String acronym) {
+        return courseRepositoryJpa.existsByNameOrAcroym(name, acronym);
+    }
+
+    @Override
+    public void save(CourseEntity course) {
+        courseRepositoryJpa.save(course);
     }
 }
