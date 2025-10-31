@@ -2,10 +2,12 @@ package com.api.blog.module.course.domain.use_cases;
 
 import com.api.blog.module.course.application.dto.create.CreateCourseRequest;
 import com.api.blog.module.course.domain.CourseEntity;
+import com.api.blog.module.course.domain.exception.CourseNotUniqueException;
 import com.api.blog.module.course.domain.exception.UserWithoutCreateCoursePermissionException;
 import com.api.blog.module.course.domain.port.CourseRepository;
 import com.api.blog.module.user.domain.UserEntity;
 import com.api.blog.module.user.domain.enumerator.RoleUser;
+import com.api.blog.module.user.domain.exception.UserNotFoundException;
 import com.api.blog.module.user.domain.port.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,6 +85,35 @@ class CreateCourseUseCaseTest {
         // act and assert
         assertThatThrownBy( () -> createCourseUseCase.execute(createCourseRequest, id))
                 .isInstanceOf(UserWithoutCreateCoursePermissionException.class);
+
+
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTheUserDontExist(){
+
+        // arrange
+        user.setRole(RoleUser.USER);
+
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+
+        // act and assert
+        assertThatThrownBy( () -> createCourseUseCase.execute(createCourseRequest, id))
+                .isInstanceOf(UserNotFoundException.class);
+
+
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenTheCourseIsNotUnique(){
+
+        // arrange
+        when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(courseRepository.existsByNameOrAcronym(any(String.class), any(String.class))).thenReturn(true);
+
+        // act and assert
+        assertThatThrownBy( () -> createCourseUseCase.execute(createCourseRequest, id))
+                .isInstanceOf(CourseNotUniqueException.class);
 
 
     }
