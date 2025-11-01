@@ -22,4 +22,14 @@ public class CourseRepositoryAdapter implements CourseRepository {
     public void save(CourseEntity course) {
         courseRepositoryJpa.save(course);
     }
+
+    @Override
+    public boolean existById(long id) {
+        return courseRepositoryJpa.existsById(id);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        courseRepositoryJpa.deleteById(id);
+    }
 }
