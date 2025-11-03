@@ -41,7 +41,7 @@ public class DeleteCourseUseCase {
 
         if (!hasPermission(user)) throw new UserWithoutDeleteCoursePermissionException();
 
-        if(courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotExistException(deleteCourseRequest.id());
+        if(!courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotExistException(deleteCourseRequest.id());
 
         courseRepository.deleteById(deleteCourseRequest.id());
 
