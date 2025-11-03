@@ -33,8 +33,8 @@ public class DeleteCourseUseCase {
      *     </ol>
      * </p>
      *
-     * @param deleteCourseRequest
-     * @param idUser
+     * @param deleteCourseRequest Record with date of the request
+     * @param idUser The id of the user authenticated
      */
     public void execute(DeleteCourseRequest deleteCourseRequest, long idUser){
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));

@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/courses")
+@Tag(name = "Courses", description = "Endpoints for the course management")
+@SecurityRequirement(name = "bearer-jwt")
 public class CourseController {
 
     private final UserAuthenticationService authenticationService;
@@ -70,7 +74,28 @@ public class CourseController {
     }
 
 
-
+    @Operation(
+            summary = "Delete the course",
+            description = "Delete the course in the System. Requires authentication"
+    )
+    @ApiResponses ( value = {
+            @ApiResponse (
+                    responseCode = "202",
+                    description = "The course is deleted success.",
+                    content = @Content(schema = @Schema(implementation = CreateCourseResponse.class))
+            ),
+            @ApiResponse (
+                    responseCode = "400",
+                    description = "The user don't have permission to delete course.",
+                    content = @Content
+            ),
+            @ApiResponse (
+                    responseCode = "404",
+                    description = "User not found",
+                    content = @Content
+            )
+    }
+    )
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomApiResponse<Void>> delele(@PathVariable long idUser){
