@@ -1,8 +1,8 @@
 package com.api.synco.module.user.domain.use_case;
 
 import com.api.synco.module.user.application.dto.delete.UserDeleteRequest;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
-import com.api.synco.module.user.domain.exception.permission.UserWithoutDeletePermissionException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
+import com.api.synco.module.user.domain.exception.permission.UserWithoutDeletePermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
@@ -18,11 +18,11 @@ public class UserDeleteUseCase {
 
     public void execute(@Valid UserDeleteRequest userDeleteRequest, long idUserAutenticated) {
 
-        if(!userRepository.existsById(userDeleteRequest.id())) throw new UserNotFoundException(userDeleteRequest.id());
+        if(!userRepository.existsById(userDeleteRequest.id())) throw new UserNotFoundDomainException(userDeleteRequest.id());
 
-        var userAuthenticated = userRepository.findById(idUserAutenticated).orElseThrow(() -> new UserNotFoundException(idUserAutenticated));
+        var userAuthenticated = userRepository.findById(idUserAutenticated).orElseThrow(() -> new UserNotFoundDomainException(idUserAutenticated));
 
-        if(!userAuthenticated.canDeleteUser()) throw new UserWithoutDeletePermissionException();
+        if(!userAuthenticated.canDeleteUser()) throw new UserWithoutDeletePermissionDomainException();
 
         userRepository.deleteById(userDeleteRequest.id());
 

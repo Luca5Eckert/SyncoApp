@@ -5,7 +5,7 @@ import com.api.synco.module.course.domain.exception.CourseNotExistException;
 import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.UserEntity;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,7 @@ public class DeleteCourseUseCase {
      * @param idUser
      */
     public void execute(DeleteCourseRequest deleteCourseRequest, long idUser){
-        var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
         if (!hasPermission(user)) throw new UserWithoutDeleteCoursePermissionException();
 

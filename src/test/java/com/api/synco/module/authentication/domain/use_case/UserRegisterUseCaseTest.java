@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 import com.api.synco.module.authentication.application.dto.register.UserRegisterRequest;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.email.EmailNotUniqueException;
-import com.api.synco.module.user.domain.exception.password.PasswordNotValidException;
+import com.api.synco.module.user.domain.exception.email.EmailNotUniqueDomainException;
+import com.api.synco.module.user.domain.exception.password.PasswordNotValidDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.synco.module.user.domain.vo.Email;
@@ -76,7 +76,7 @@ class UserRegisterUseCaseTest {
         assertThat(saved.getRole()).isEqualTo(RoleUser.USER);
     }
 
-    @DisplayName("Should throw EmailNotUniqueException when email already exists")
+    @DisplayName("Should throw EmailNotUniqueDomainException when email already exists")
     @Test
     public void shouldThrowEmailNotUniqueException(){
         //arrange
@@ -86,12 +86,12 @@ class UserRegisterUseCaseTest {
 
         //act and assert
         assertThatThrownBy(() -> userRegisterUseCase.execute(request))
-                .isInstanceOf(EmailNotUniqueException.class);
+                .isInstanceOf(EmailNotUniqueDomainException.class);
 
         verify(userRepository, never()).save(any());
     }
 
-    @DisplayName("Should throw PasswordNotValidException when password is weak")
+    @DisplayName("Should throw PasswordNotValidDomainException when password is weak")
     @Test
     public void shouldThrowPasswordNotValidException(){
         //arrange
@@ -99,7 +99,7 @@ class UserRegisterUseCaseTest {
 
         //act and assert
         assertThatThrownBy(() -> userRegisterUseCase.execute(request))
-                .isInstanceOf(PasswordNotValidException.class);
+                .isInstanceOf(PasswordNotValidDomainException.class);
 
         verify(passwordEncoder, never()).encode(any());
         verify(userRepository, never()).existsByEmail(any());

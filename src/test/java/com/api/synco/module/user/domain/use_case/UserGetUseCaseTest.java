@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.vo.Email;
 import com.api.synco.module.user.domain.vo.Name;
@@ -61,7 +61,7 @@ class UserGetUseCaseTest {
         verify(userRepository).findById(id);
     }
 
-    @DisplayName("Should throw UserNotFoundException when user not found")
+    @DisplayName("Should throw UserNotFoundDomainException when user not found")
     @Test
     public void shouldThrowUserNotFoundExceptionWhenNotFound(){
         //arrange
@@ -69,7 +69,7 @@ class UserGetUseCaseTest {
 
         //act and assert
         assertThatThrownBy(() -> userGetUseCase.execute(id))
-                .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(UserNotFoundDomainException.class);
 
         verify(userRepository).findById(id);
     }

@@ -6,8 +6,8 @@ import static org.mockito.Mockito.*;
 import com.api.synco.module.user.application.dto.create.UserCreateRequest;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.email.EmailNotUniqueException;
-import com.api.synco.module.user.domain.exception.password.PasswordNotValidException;
+import com.api.synco.module.user.domain.exception.email.EmailNotUniqueDomainException;
+import com.api.synco.module.user.domain.exception.password.PasswordNotValidDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.synco.module.user.domain.vo.Email;
@@ -79,7 +79,7 @@ class UserCreateUseCaseTest {
         assertThat(saved.getRole()).isEqualTo(user.getRole());
     }
 
-    @DisplayName("The method execute should throw a EmailNotUniqueException")
+    @DisplayName("The method execute should throw a EmailNotUniqueDomainException")
     @Test
     public void shouldThrowEmailNotUniqueException(){
         //arrange
@@ -89,19 +89,19 @@ class UserCreateUseCaseTest {
 
         //act and assert
         assertThatThrownBy( () -> userCreateUseCase.execute(request))
-                .isInstanceOf(EmailNotUniqueException.class);
+                .isInstanceOf(EmailNotUniqueDomainException.class);
 
         verify(userRepository, never()).save(any());
 
     }
 
-    @DisplayName("Should Throw PasswordNotValidException")
+    @DisplayName("Should Throw PasswordNotValidDomainException")
     @Test
     public void shouldThrowPasswordNotValidException(){
         when(passwordValidator.isValid(password)).thenReturn(false);
 
         assertThatThrownBy( () -> userCreateUseCase.execute(request))
-                .isExactlyInstanceOf(PasswordNotValidException.class);
+                .isExactlyInstanceOf(PasswordNotValidDomainException.class);
 
         verify(passwordEncoder, never()).encode(any());
         verify(userRepository, never()).existsByEmail(any());

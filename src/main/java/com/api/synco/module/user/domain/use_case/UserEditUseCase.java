@@ -2,8 +2,8 @@ package com.api.synco.module.user.domain.use_case;
 
 import com.api.synco.module.user.application.dto.edit.UserEditRequest;
 import com.api.synco.module.user.domain.UserEntity;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
-import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
+import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.vo.Email;
 import com.api.synco.module.user.domain.vo.Name;
@@ -31,10 +31,10 @@ public class UserEditUseCase {
      * @return The user edited
      */
     public UserEntity execute(UserEditRequest userEditRequest, long idUserAutenticated) {
-        UserEntity userAuthenticated = userRepository.findById(idUserAutenticated).orElseThrow(() -> new UserNotFoundException(idUserAutenticated));
-        UserEntity userEdit = userRepository.findById(userEditRequest.id()).orElseThrow( () -> new UserNotFoundException(userEditRequest.id()));
+        UserEntity userAuthenticated = userRepository.findById(idUserAutenticated).orElseThrow(() -> new UserNotFoundDomainException(idUserAutenticated));
+        UserEntity userEdit = userRepository.findById(userEditRequest.id()).orElseThrow( () -> new UserNotFoundDomainException(userEditRequest.id()));
 
-        if(!canEditUser(userAuthenticated, userEdit) ) throw new UserWithoutEditPermissionException();
+        if(!canEditUser(userAuthenticated, userEdit) ) throw new UserWithoutEditPermissionDomainException();
 
         editUser(userEdit, userEditRequest);
 

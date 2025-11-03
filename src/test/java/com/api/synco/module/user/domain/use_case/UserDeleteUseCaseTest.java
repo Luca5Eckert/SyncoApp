@@ -3,8 +3,8 @@ package com.api.synco.module.user.domain.use_case;
 import com.api.synco.module.user.application.dto.delete.UserDeleteRequest;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
-import com.api.synco.module.user.domain.exception.permission.UserWithoutDeletePermissionException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
+import com.api.synco.module.user.domain.exception.permission.UserWithoutDeletePermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ class UserDeleteUseCaseTest {
         when(userRepository.existsById(id)).thenReturn(false);
 
         assertThatThrownBy(() -> userDeleteUseCase.execute(userDeleteRequest, idUserAuthentication))
-                .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(UserNotFoundDomainException.class);
 
         verify(userRepository, never()).deleteById(anyLong());
     }
@@ -76,7 +76,7 @@ class UserDeleteUseCaseTest {
 
         //act and assert
         assertThatThrownBy(() -> userDeleteUseCase.execute(userDeleteRequest, idUserAuthentication))
-                .isExactlyInstanceOf(UserWithoutDeletePermissionException.class);
+                .isExactlyInstanceOf(UserWithoutDeletePermissionDomainException.class);
 
     }
 

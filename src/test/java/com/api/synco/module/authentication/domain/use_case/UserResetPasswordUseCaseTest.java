@@ -3,7 +3,7 @@ package com.api.synco.module.authentication.domain.use_case;
 import com.api.synco.module.authentication.application.dto.reset_password.UserResetRequest;
 import com.api.synco.module.authentication.domain.exception.password.PasswordNotMatchesException;
 import com.api.synco.module.user.domain.UserEntity;
-import com.api.synco.module.user.domain.exception.password.PasswordNotValidException;
+import com.api.synco.module.user.domain.exception.password.PasswordNotValidDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.validator.PasswordValidatorImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -104,7 +104,7 @@ public class UserResetPasswordUseCaseTest {
 
         // act and assert
         assertThatThrownBy(() -> userResetPasswordUseCase.execute(userResetRequest, userId))
-                .isExactlyInstanceOf(PasswordNotValidException.class);
+                .isExactlyInstanceOf(PasswordNotValidDomainException.class);
 
 
     }

@@ -3,7 +3,7 @@ package com.api.synco.module.user.domain.use_case;
 import com.api.synco.module.user.application.dto.edit.UserEditRequest;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionException;
+import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.vo.Email;
 import com.api.synco.module.user.domain.vo.Name;
@@ -105,7 +105,7 @@ class UserEditUseCaseTest {
 
         //act and assert
         assertThatThrownBy(() -> userEditUseCase.execute(userEditRequest, idAuthenticateUser))
-                .isExactlyInstanceOf(UserWithoutEditPermissionException.class);
+                .isExactlyInstanceOf(UserWithoutEditPermissionDomainException.class);
 
     }
 

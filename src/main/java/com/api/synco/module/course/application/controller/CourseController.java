@@ -4,6 +4,7 @@ import com.api.synco.core.UserAuthenticationService;
 import com.api.synco.infrastructure.api.CustomApiResponse;
 import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
+import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
 import com.api.synco.module.course.domain.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,10 +15,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -69,6 +67,20 @@ public class CourseController {
         var response = courseService.create(createCourseRequest, idUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(CustomApiResponse.success(201, "The course is created success", response));
+    }
+
+
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomApiResponse<Void>> delele(@PathVariable long idUser){
+        DeleteCourseRequest request = new DeleteCourseRequest(idUser);
+
+        long idUserAuthenticated = authenticationService.getAuthenticatedUserId();
+
+        courseService.delete(request, idUserAuthenticated);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "The course is deleted success"));
     }
 
 

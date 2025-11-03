@@ -3,8 +3,8 @@ package com.api.synco.module.authentication.domain.use_case;
 import com.api.synco.module.authentication.application.dto.register.UserRegisterRequest;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.email.EmailNotUniqueException;
-import com.api.synco.module.user.domain.exception.password.PasswordNotValidException;
+import com.api.synco.module.user.domain.exception.email.EmailNotUniqueDomainException;
+import com.api.synco.module.user.domain.exception.password.PasswordNotValidDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.validator.PasswordValidatorImpl;
 import com.api.synco.module.user.domain.vo.Email;
@@ -39,13 +39,13 @@ public class UserRegisterUseCase {
         Name name = new Name(userRegisterRequest.name());
         Email email = new Email(userRegisterRequest.email());
 
-        if(!passwordValidator.isValid(userRegisterRequest.password())) throw new PasswordNotValidException();
+        if(!passwordValidator.isValid(userRegisterRequest.password())) throw new PasswordNotValidDomainException();
 
         String password = passwordEncoder.encode(userRegisterRequest.password());
 
         UserEntity user = new UserEntity(name, email, password, RoleUser.USER);
 
-        if(userRepository.existsByEmail(user.getEmail())) throw new EmailNotUniqueException();
+        if(userRepository.existsByEmail(user.getEmail())) throw new EmailNotUniqueDomainException();
 
         userRepository.save(user);
 

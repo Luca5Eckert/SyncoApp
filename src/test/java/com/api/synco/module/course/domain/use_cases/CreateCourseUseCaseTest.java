@@ -7,7 +7,7 @@ import com.api.synco.module.course.domain.exception.UserWithoutCreateCoursePermi
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,7 +99,7 @@ class CreateCourseUseCaseTest {
 
         // act and assert
         assertThatThrownBy( () -> createCourseUseCase.execute(createCourseRequest, id))
-                .isInstanceOf(UserNotFoundException.class);
+                .isInstanceOf(UserNotFoundDomainException.class);
 
 
     }

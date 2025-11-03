@@ -1,6 +1,6 @@
 package com.api.synco.infrastructure.security.user_details;
 
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import com.api.synco.module.user.domain.vo.Email;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = userRepository.findByEmail(new Email(email)).orElseThrow( () -> new UserNotFoundException(email));
+        var user = userRepository.findByEmail(new Email(email)).orElseThrow( () -> new UserNotFoundDomainException(email));
         return userDetailsMapper.toEntity(user);
     }
 

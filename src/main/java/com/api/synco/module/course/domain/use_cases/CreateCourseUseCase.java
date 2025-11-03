@@ -6,7 +6,7 @@ import com.api.synco.module.course.domain.exception.CourseNotUniqueException;
 import com.api.synco.module.course.domain.exception.UserWithoutCreateCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.UserEntity;
-import com.api.synco.module.user.domain.exception.UserNotFoundException;
+import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +38,7 @@ public class CreateCourseUseCase {
      * @param createCourseRequest Request containg the data for create a new course
      * @param idUser The id of User who wants to create a course
      *
-     * @throws UserNotFoundException If the user is not found
+     * @throws UserNotFoundDomainException If the user is not found
      * @throws UserWithoutCreateCoursePermissionException If the user don't have permission to create the course
      * @throws CourseNotUniqueException If the database alrealdy have a course with the same name or acronym
      *
@@ -46,7 +46,7 @@ public class CreateCourseUseCase {
      * */
 
     public CourseEntity execute(CreateCourseRequest createCourseRequest, long idUser) {
-        var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException(idUser));
+        var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
         if (!hasPermission(user)) throw new UserWithoutCreateCoursePermissionException();
 
