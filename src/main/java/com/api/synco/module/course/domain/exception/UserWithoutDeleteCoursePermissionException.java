@@ -1,6 +1,6 @@
 package com.api.synco.module.course.domain.exception;
 
-public class UserWithoutDeleteCoursePermissionException extends CourseException {
+public class UserWithoutDeleteCoursePermissionException extends CourseDomainException {
     public UserWithoutDeleteCoursePermissionException(String message) {
         super(message);
     }

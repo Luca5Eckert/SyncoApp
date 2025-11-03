@@ -4,6 +4,7 @@ import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.exception.CourseNotUniqueException;
 import com.api.synco.module.course.domain.exception.UserWithoutCreateCoursePermissionException;
+import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
@@ -48,7 +49,7 @@ public class CreateCourseUseCase {
     public CourseEntity execute(CreateCourseRequest createCourseRequest, long idUser) {
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
-        if (!hasPermission(user)) throw new UserWithoutCreateCoursePermissionException();
+        if (CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
 
         CourseEntity course = new CourseEntity(
                 createCourseRequest.name(),
@@ -64,16 +65,5 @@ public class CreateCourseUseCase {
         return course;
     }
 
-    /**
-     * Verify if the user have permission to create a course
-     *
-     * @param user The user who will be verified
-     * @return {@code True} if the user have permission, {@code False} if the user don't have permission
-     */
-    private boolean hasPermission(UserEntity user) {
-        return switch (user.getRole()) {
-            case ADMIN -> true;
-            default -> false;
-        };
-    }
+
 }

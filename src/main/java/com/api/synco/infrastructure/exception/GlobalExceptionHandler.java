@@ -2,7 +2,7 @@ package com.api.synco.infrastructure.exception;
 
 import com.api.synco.infrastructure.api.CustomApiResponse;
 import com.api.synco.module.authentication.domain.exception.AuthenticationException;
-import com.api.synco.module.course.domain.exception.CourseException;
+import com.api.synco.module.course.domain.exception.CourseDomainException;
 import com.api.synco.module.user.domain.exception.UserDomainException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", e.getMessage(), path));
     }
 
-    @ExceptionHandler(CourseException.class)
-    public ResponseEntity<CustomApiResponse<?>> handlerCourseException(CourseException e, HttpServletRequest httpServletRequest){
+    @ExceptionHandler(CourseDomainException.class)
+    public ResponseEntity<CustomApiResponse<?>> handlerCourseException(CourseDomainException e, HttpServletRequest httpServletRequest){
         String path = httpServletRequest.getRequestURI();
 
         return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "USER_EXCEPTION", e.getMessage(), path));

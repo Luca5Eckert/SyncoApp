@@ -4,6 +4,8 @@ import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class CourseRepositoryAdapter implements CourseRepository {
 
@@ -31,5 +33,10 @@ public class CourseRepositoryAdapter implements CourseRepository {
     @Override
     public void deleteById(long id) {
         courseRepositoryJpa.deleteById(id);
+    }
+
+    @Override
+    public Optional<CourseEntity> findById(long id) {
+        return courseRepositoryJpa.findById(id);
     }
 }

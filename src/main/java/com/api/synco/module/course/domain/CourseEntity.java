@@ -1,6 +1,9 @@
 package com.api.synco.module.course.domain;
 
 import com.api.synco.module.class_entity.domain.ClassEntity;
+import com.api.synco.module.course.domain.exception.acronym.CourseAcronymBlankException;
+import com.api.synco.module.course.domain.exception.name.CourseNameBlankException;
+import com.api.synco.module.user.domain.enumerator.RoleUser;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -43,6 +46,9 @@ public class CourseEntity {
     }
 
     public void setName(String name) {
+        if(name == null || name.isBlank()){
+            throw new CourseNameBlankException();
+        }
         this.name = name;
     }
 
@@ -51,6 +57,9 @@ public class CourseEntity {
     }
 
     public void setAcronym(String acronym) {
+        if(acronym == null || acronym.isBlank()){
+            throw new CourseAcronymBlankException();
+        }
         this.acronym = acronym;
     }
 
@@ -61,5 +70,13 @@ public class CourseEntity {
     public void setClassEntities(List<ClassEntity> classEntities) {
         this.classEntities = classEntities;
     }
+
+    public static boolean havePermissionToModify(RoleUser roleUser){
+        return switch (roleUser){
+            case ADMIN -> true;
+            default -> false;
+        };
+    }
+
 
 }

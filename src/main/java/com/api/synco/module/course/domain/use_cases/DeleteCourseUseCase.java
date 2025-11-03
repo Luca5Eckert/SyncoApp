@@ -1,6 +1,7 @@
 package com.api.synco.module.course.domain.use_cases;
 
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
+import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.exception.CourseNotExistException;
 import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
@@ -39,19 +40,12 @@ public class DeleteCourseUseCase {
     public void execute(DeleteCourseRequest deleteCourseRequest, long idUser){
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
-        if (!hasPermission(user)) throw new UserWithoutDeleteCoursePermissionException();
+        if (CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
 
         if(!courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotExistException(deleteCourseRequest.id());
 
         courseRepository.deleteById(deleteCourseRequest.id());
 
-    }
-
-    private boolean hasPermission(UserEntity user) {
-        return switch (user.getRole()){
-            case ADMIN -> true;
-            default -> false;
-        };
     }
 
 }
