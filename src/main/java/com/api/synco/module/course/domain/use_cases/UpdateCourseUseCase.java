@@ -3,9 +3,9 @@ package com.api.synco.module.course.domain.use_cases;
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.exception.CourseNotExistException;
-import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
+import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 
 public class UpdateCourseUseCase {
@@ -18,10 +18,34 @@ public class UpdateCourseUseCase {
         this.userRepository = userRepository;
     }
 
+    /**
+     *
+     * Update the Course
+     *
+     * <p>
+     *     The method performs in the following steps:
+     *     <ol>
+     *         <li>Find the user authenticated</li>
+     *         <li>Verify if the user have permission to update</li>
+     *         <li>Find the course</li>
+     *         <li>Update the atributes</li>
+     *         <li>Save the course in database</li>
+     *     </ol>
+     * </p>
+     *
+     * @param updateCourseRequest The record with data of request
+     * @param idCourse The id of the course who will be update
+     * @param idUserAuthenticated The id of the user authenticated
+     * @return The course entity edited
+     * @throws UserWithoutEditPermissionDomainException if the user do not have permission to edit
+     * @throws UserNotFoundDomainException if the user is not found
+     * @throws CourseNotExistException if the course is not found
+     *
+     */
     public CourseEntity execute(UpdateCourseRequest updateCourseRequest, long idCourse, long idUserAuthenticated){
         var user = userRepository.findById(idUserAuthenticated).orElseThrow(() -> new UserNotFoundDomainException(idUserAuthenticated));
 
-        if (!CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
+        if (!CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutEditPermissionDomainException();
 
         CourseEntity course = courseRepository.findById(idCourse).orElseThrow( () -> new CourseNotExistException(idCourse));
 
