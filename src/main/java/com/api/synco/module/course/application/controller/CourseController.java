@@ -5,6 +5,8 @@ import com.api.synco.infrastructure.api.CustomApiResponse;
 import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
+import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
+import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
 import com.api.synco.module.course.domain.service.CourseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -106,6 +108,17 @@ public class CourseController {
         courseService.delete(request, idUserAuthenticated);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "The course is deleted success"));
+    }
+
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CustomApiResponse<UpdateCourseResponse>> update(@Valid UpdateCourseRequest updateCourseRequest, @PathVariable long id){
+        long idUser = authenticationService.getAuthenticatedUserId();
+
+        var response = courseService.update(updateCourseRequest, id, idUser);
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "THe course is updated success", response));
     }
 
 
