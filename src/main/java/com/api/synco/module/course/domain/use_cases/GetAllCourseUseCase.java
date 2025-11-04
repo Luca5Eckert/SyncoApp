@@ -1,4 +1,42 @@
 package com.api.synco.module.course.domain.use_cases;
 
+import com.api.synco.module.course.domain.CourseEntity;
+import com.api.synco.module.course.domain.filter.CourseFilter;
+import com.api.synco.module.course.domain.filter.CourseSearchProvider;
+import com.api.synco.module.course.domain.filter.PageCourse;
+import com.api.synco.module.course.domain.port.CourseRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Component
 public class GetAllCourseUseCase {
+
+    private final CourseRepository courseRepository;
+
+    public GetAllCourseUseCase(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
+
+    public List<CourseEntity> execute(
+            String name,
+            String acronym,
+            int pageNumber,
+            int pageSize ){
+
+        CourseFilter courseFilter = CourseFilter.builder()
+                .setNameContains(name)
+                .setAcronymContains(acronym)
+                .build();
+
+        var search = CourseSearchProvider.of(courseFilter);
+
+        PageCourse pageCourse = new PageCourse(pageNumber, pageSize);
+
+
+
+        courseRepository.getAll(search, pageCourse);
+
+    }
+
 }
