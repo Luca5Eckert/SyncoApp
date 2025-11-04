@@ -110,7 +110,33 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "The course is deleted success"));
     }
 
-
+    @Operation(
+            summary = "Update the course",
+            description = "Update the course in the System. Requires authentication"
+    )
+    @ApiResponses ( value = {
+            @ApiResponse (
+                    responseCode = "202",
+                    description = "The course is updated success.",
+                    content = @Content(schema = @Schema(implementation = CreateCourseResponse.class))
+            ),
+            @ApiResponse (
+                    responseCode = "400",
+                    description = "The user don't have permission to update the course.",
+                    content = @Content
+            ),
+            @ApiResponse (
+                    responseCode = "404",
+                    description = "User not found",
+                    content = @Content
+            ),
+            @ApiResponse (
+                    responseCode = "404",
+                    description = "Course not found",
+                    content = @Content
+            )
+    }
+    )
     @PatchMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CustomApiResponse<UpdateCourseResponse>> update(@Valid UpdateCourseRequest updateCourseRequest, @PathVariable long id){
