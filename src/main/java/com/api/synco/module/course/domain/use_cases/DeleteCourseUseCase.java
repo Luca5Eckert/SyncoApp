@@ -2,10 +2,9 @@ package com.api.synco.module.course.domain.use_cases;
 
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
 import com.api.synco.module.course.domain.CourseEntity;
-import com.api.synco.module.course.domain.exception.CourseNotExistException;
+import com.api.synco.module.course.domain.exception.CourseNotFoundException;
 import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
-import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
 import org.springframework.stereotype.Component;
@@ -42,7 +41,7 @@ public class DeleteCourseUseCase {
 
         if (CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
 
-        if(!courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotExistException(deleteCourseRequest.id());
+        if(!courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotFoundException(deleteCourseRequest.id());
 
         courseRepository.deleteById(deleteCourseRequest.id());
 

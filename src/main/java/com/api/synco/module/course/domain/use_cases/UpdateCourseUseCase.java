@@ -2,7 +2,7 @@ package com.api.synco.module.course.domain.use_cases;
 
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.domain.CourseEntity;
-import com.api.synco.module.course.domain.exception.CourseNotExistException;
+import com.api.synco.module.course.domain.exception.CourseNotFoundException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionDomainException;
@@ -41,7 +41,7 @@ public class UpdateCourseUseCase {
      * @return The course entity edited
      * @throws UserWithoutEditPermissionDomainException if the user do not have permission to edit
      * @throws UserNotFoundDomainException if the user is not found
-     * @throws CourseNotExistException if the course is not found
+     * @throws CourseNotFoundException if the course is not found
      *
      */
     public CourseEntity execute(UpdateCourseRequest updateCourseRequest, long idCourse, long idUserAuthenticated){
@@ -49,7 +49,7 @@ public class UpdateCourseUseCase {
 
         if (!CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutEditPermissionDomainException();
 
-        CourseEntity course = courseRepository.findById(idCourse).orElseThrow( () -> new CourseNotExistException(idCourse));
+        CourseEntity course = courseRepository.findById(idCourse).orElseThrow( () -> new CourseNotFoundException(idCourse));
 
         course.setName(updateCourseRequest.name());
         course.setAcronym(updateCourseRequest.acronym());

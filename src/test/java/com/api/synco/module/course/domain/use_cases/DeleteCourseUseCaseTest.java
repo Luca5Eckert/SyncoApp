@@ -1,7 +1,7 @@
 package com.api.synco.module.course.domain.use_cases;
 
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
-import com.api.synco.module.course.domain.exception.CourseNotExistException;
+import com.api.synco.module.course.domain.exception.CourseNotFoundException;
 import com.api.synco.module.course.domain.exception.UserWithoutDeleteCoursePermissionException;
 import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.UserEntity;
@@ -13,12 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -85,7 +83,7 @@ class DeleteCourseUseCaseTest {
 
         // act and assert
         assertThatThrownBy( () -> deleteCourseUseCase.execute(deleteCourseRequest, idUser))
-                .isExactlyInstanceOf(CourseNotExistException.class);
+                .isExactlyInstanceOf(CourseNotFoundException.class);
 
         //assert
         verify(courseRepository, never()).deleteById(any(Long.class));
