@@ -10,7 +10,7 @@ public class CourseSearchProvider {
 
     public static Specification<CourseEntity> of(CourseFilter courseFilter){
         return CourseSpecifications.nameContains(courseFilter.name())
-                .and(CourseSpecifications.acronymContains(courseFilter.emailContains()));
+                .and(CourseSpecifications.acronymContains(courseFilter.acronym()));
     }
 
 
