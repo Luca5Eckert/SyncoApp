@@ -8,10 +8,7 @@ import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
 import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.mapper.CourseMapper;
-import com.api.synco.module.course.domain.use_cases.CreateCourseUseCase;
-import com.api.synco.module.course.domain.use_cases.DeleteCourseUseCase;
-import com.api.synco.module.course.domain.use_cases.GetAllCourseUseCase;
-import com.api.synco.module.course.domain.use_cases.UpdateCourseUseCase;
+import com.api.synco.module.course.domain.use_cases.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,13 +22,15 @@ public class CourseService {
     private final DeleteCourseUseCase deleteCourseUseCase;
     private final UpdateCourseUseCase updateCourseUseCase;
     private final GetAllCourseUseCase getAllCourseUseCase;
+    private final GetCourseUseCase getCourseUseCase;
 
-    public CourseService(CourseMapper courseMapper, CreateCourseUseCase createCourseUseCase, DeleteCourseUseCase deleteCourseUseCase, UpdateCourseUseCase updateCourseUseCase, GetAllCourseUseCase getAllCourseUseCase) {
+    public CourseService(CourseMapper courseMapper, CreateCourseUseCase createCourseUseCase, DeleteCourseUseCase deleteCourseUseCase, UpdateCourseUseCase updateCourseUseCase, GetAllCourseUseCase getAllCourseUseCase, GetCourseUseCase getCourseUseCase) {
         this.courseMapper = courseMapper;
         this.createCourseUseCase = createCourseUseCase;
         this.deleteCourseUseCase = deleteCourseUseCase;
         this.updateCourseUseCase = updateCourseUseCase;
         this.getAllCourseUseCase = getAllCourseUseCase;
+        this.getCourseUseCase = getCourseUseCase;
     }
 
     /**
@@ -70,6 +69,18 @@ public class CourseService {
     public UpdateCourseResponse update(UpdateCourseRequest updateCourseRequest, long idCourse, long idUser){
         CourseEntity course = updateCourseUseCase.execute(updateCourseRequest, idCourse, idCourse);
         return courseMapper.toUpdateResponse(course);
+    }
+
+    /**
+     * Get the user
+     *
+     * @param id The id of the course
+     * @return Response with data of course
+     */
+    public GetCourseResponse getCourse(long id){
+        CourseEntity course = getCourseUseCase.execute(id);
+
+        return courseMapper.toGetResponse(course);
     }
 
 

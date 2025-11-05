@@ -9,7 +9,6 @@ import com.api.synco.module.course.application.dto.get.GetCourseResponse;
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
 import com.api.synco.module.course.domain.service.CourseService;
-import com.api.synco.module.course.domain.use_cases.GetAllCourseUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -152,7 +151,10 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "THe course is updated success", response));
     }
 
-    @GetMapping()
+    @Operation(
+            summary = "Get All Courses",
+            description = "Get all courses following the filters"
+    )
     @ApiResponses ( value = {
             @ApiResponse (
                     responseCode = "200",
@@ -160,6 +162,7 @@ public class CourseController {
                     content = @Content(schema = @Schema(implementation = GetCourseResponse.class))
             )
     })
+    @GetMapping()
     public ResponseEntity<CustomApiResponse<List<GetCourseResponse>>> getALl(
             @RequestParam(value = "name", required = false)
             @Parameter(description = "Filters by name containing the value")
@@ -176,8 +179,15 @@ public class CourseController {
     ){
         var listResponse = courseService.getAll(name, acronym, pageNumber, pageSize);
 
-        return ResponseEntity.status(HttpStatus.OK).body(CustomApiResponse.success(200, "Get all users.", listResponse));
+        return ResponseEntity.ok(CustomApiResponse.success(200, "Get all courses.", listResponse));
 
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomApiResponse<GetCourseResponse>> get(@PathVariable long id){
+        var response = courseService.getCourse(id);
+
+        return ResponseEntity.ok(CustomApiResponse.success(200, "Get the course", response));
     }
 
 
