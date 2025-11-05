@@ -36,6 +36,7 @@ public class UserService {
 
     public UserCreateResponse create(UserCreateRequest userCreateRequest) {
         var user = userCreateUseCase.execute(userCreateRequest);
+
         return userMapper.toCreateResponse(user);
     }
 
@@ -45,6 +46,7 @@ public class UserService {
 
     public UserEditResponse edit(UserEditRequest userEditRequest, long idUserAutenticated) {
         var user = userEditUseCase.execute(userEditRequest, idUserAutenticated);
+
         return userMapper.toEditResponse(user);
     }
 
@@ -55,7 +57,11 @@ public class UserService {
 
     public List<UserGetResponse> getAll(String name, String email, RoleUser roleUser, Instant createAt, Instant updateAt, int pageNumber, int pageSize) {
         var users = userGetAllUseCase.execute(name, email, roleUser, createAt, updateAt, pageNumber, pageSize);
-        return users.stream().map(userMapper::toGetResponse).toList();
+
+        return users.stream()
+                .map(userMapper::toGetResponse)
+                .toList();
+
     }
 
 }

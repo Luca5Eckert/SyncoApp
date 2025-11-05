@@ -78,7 +78,7 @@ public class CourseService {
      *
      * @param name The name who will filter courses
      * @param acronym The acronym who will filter courses
-     * @param pageNumber The number of page who want the courses
+     * @param pageNumber The number of page of courses
      * @param pageSize The number of course per page
      *
      * @return A List with GetCourseResponse

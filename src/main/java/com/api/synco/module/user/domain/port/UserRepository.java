@@ -1,11 +1,12 @@
 package com.api.synco.module.user.domain.port;
 
+import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.filter.PageUser;
 import com.api.synco.module.user.domain.vo.Email;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -19,7 +20,7 @@ public interface UserRepository {
 
     void deleteById(long id);
 
-    List<UserEntity> findAll(Specification<UserEntity> userEntitySpecification, PageUser pageUser);
+    Page<UserEntity> findAll(Specification<UserEntity> userEntitySpecification, PageUser pageUser);
 
     Optional<UserEntity> findByEmail(Email email);
 }

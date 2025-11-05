@@ -1,15 +1,16 @@
 package com.api.synco.module.user.domain.use_case;
 
+import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.user.domain.UserEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
 import com.api.synco.module.user.domain.filter.PagenableUserProvider;
 import com.api.synco.module.user.domain.filter.UserFilter;
 import com.api.synco.module.user.domain.filter.UserSearchProvider;
 import com.api.synco.module.user.domain.port.UserRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.List;
 
 @Component
 public class UserGetAllUseCase {
@@ -22,7 +23,7 @@ public class UserGetAllUseCase {
         this.userCreateSearch = userCreateSearch;
     }
 
-    public List<UserEntity> execute(String name
+    public Page<UserEntity> execute(String name
             , String email
             , RoleUser roleUser
             , Instant createAt
@@ -44,4 +45,5 @@ public class UserGetAllUseCase {
 
         return userRepository.findAll(searchSpecification, searchPaginable);
     }
+
 }
