@@ -5,10 +5,13 @@ import com.api.synco.infrastructure.api.CustomApiResponse;
 import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
+import com.api.synco.module.course.application.dto.get.GetCourseResponse;
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
 import com.api.synco.module.course.domain.service.CourseService;
+import com.api.synco.module.course.domain.use_cases.GetAllCourseUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,6 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -145,6 +150,34 @@ public class CourseController {
         var response = courseService.update(updateCourseRequest, id, idUser);
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(CustomApiResponse.success(202, "THe course is updated success", response));
+    }
+
+    @GetMapping()
+    @ApiResponses ( value = {
+            @ApiResponse (
+                    responseCode = "200",
+                    description = "Get all users.",
+                    content = @Content(schema = @Schema(implementation = GetCourseResponse.class))
+            )
+    })
+    public ResponseEntity<CustomApiResponse<List<GetCourseResponse>>> getALl(
+            @RequestParam(value = "name", required = false)
+            @Parameter(description = "Filters by name containing the value")
+            String name,
+            @RequestParam(value = "acroym", required = false)
+            @Parameter(description = "Filters by acronym containing the value")
+            String acronym,
+            @RequestParam(value = "page", defaultValue = "0")
+            @Parameter(description = "Page number (starts at 0)")
+            int pageNumber,
+            @RequestParam(value = "size", defaultValue = "10")
+            @Parameter(description = "Page size (max. 50, default 10)")
+            int pageSize
+    ){
+        var listResponse = courseService.getAll(name, acronym, pageNumber, pageSize);
+
+        return ResponseEntity.status(HttpStatus.OK).body(CustomApiResponse.success(200, "Get all users.", listResponse));
+
     }
 
 
