@@ -19,6 +19,15 @@ public class GetAllCourseUseCase {
         this.courseRepository = courseRepository;
     }
 
+    /**
+     * Get all courses
+     *
+     * @param name Filter by name
+     * @param acronym Filter by acronym
+     * @param pageNumber Number of page
+     * @param pageSize Quantity of courses per page
+     * @return A page with courses entity
+     */
     public Page<CourseEntity> execute(
             String name,
             String acronym,

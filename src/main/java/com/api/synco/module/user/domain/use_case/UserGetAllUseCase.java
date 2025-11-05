@@ -23,6 +23,7 @@ public class UserGetAllUseCase {
         this.userCreateSearch = userCreateSearch;
     }
 
+
     public Page<UserEntity> execute(String name
             , String email
             , RoleUser roleUser
