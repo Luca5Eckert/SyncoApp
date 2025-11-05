@@ -5,6 +5,7 @@ import com.api.synco.module.course.domain.filter.CourseFilter;
 import com.api.synco.module.course.domain.filter.CourseSearchProvider;
 import com.api.synco.module.course.domain.filter.PageCourse;
 import com.api.synco.module.course.domain.port.CourseRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class GetAllCourseUseCase {
         this.courseRepository = courseRepository;
     }
 
-    public List<CourseEntity> execute(
+    public Page<CourseEntity> execute(
             String name,
             String acronym,
             int pageNumber,
@@ -33,9 +34,7 @@ public class GetAllCourseUseCase {
 
         PageCourse pageCourse = new PageCourse(pageNumber, pageSize);
 
-
-
-        courseRepository.getAll(search, pageCourse);
+        return courseRepository.findAll(search, pageCourse);
 
     }
 

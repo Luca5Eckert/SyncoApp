@@ -2,6 +2,7 @@ package com.api.synco.module.course.domain.port;
 
 import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.filter.PageCourse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.Optional;
@@ -17,5 +18,5 @@ public interface CourseRepository {
 
     Optional<CourseEntity> findById(long id);
 
-    void getAll(Specification<CourseEntity> search, PageCourse pageCourse);
+    Page<CourseEntity> findAll(Specification<CourseEntity> search, PageCourse pageCourse);
 }

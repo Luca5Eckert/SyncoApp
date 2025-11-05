@@ -3,6 +3,7 @@ package com.api.synco.infrastructure.persistence.course.repository;
 import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.course.domain.filter.PageCourse;
 import com.api.synco.module.course.domain.port.CourseRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -44,12 +45,13 @@ public class CourseRepositoryAdapter implements CourseRepository {
     }
 
     @Override
-    public void getAll(Specification<CourseEntity> search, PageCourse pageCourse) {
+    public Page<CourseEntity> findAll(Specification<CourseEntity> search, PageCourse pageCourse) {
         PageRequest pageRequest = PageRequest.of(
                 pageCourse.pageNumber(),
                 pageCourse.pageSize()
         );
 
-        return
+        return courseRepositoryJpa.findAll(search, pageRequest);
     }
+
 }
