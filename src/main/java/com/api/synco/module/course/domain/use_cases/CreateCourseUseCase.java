@@ -53,7 +53,8 @@ public class CreateCourseUseCase {
 
         CourseEntity course = new CourseEntity(
                 createCourseRequest.name(),
-                createCourseRequest.acronym()
+                createCourseRequest.acronym(),
+                createCourseRequest.description()
         );
 
         if(courseRepository.existsByNameOrAcronym(course.getName(), course.getAcronym())){

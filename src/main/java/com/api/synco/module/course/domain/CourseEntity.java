@@ -19,21 +19,25 @@ public class CourseEntity {
 
     private String acronym;
 
+    private String description;
+
     @OneToMany(fetch = FetchType.LAZY)
     private List<ClassEntity> classEntities;
 
     public CourseEntity() {
     }
 
-    public CourseEntity(long id, String name, String acronym) {
+    public CourseEntity(long id, String name, String acronym, String description) {
         this.id = id;
         this.name = name;
         this.acronym = acronym;
+        this.description = description;
     }
 
-    public CourseEntity(String name, String acronym) {
+    public CourseEntity(String name, String acronym, String description) {
         this.name = name;
         this.acronym = acronym;
+        this.description = description;
     }
 
 
@@ -61,6 +65,18 @@ public class CourseEntity {
             throw new CourseAcronymBlankException();
         }
         this.acronym = acronym;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<ClassEntity> getClassEntities() {

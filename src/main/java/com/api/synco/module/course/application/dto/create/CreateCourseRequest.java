@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 public record CreateCourseRequest(
         @NotBlank(message = "Course's name can't be blank") @Size(max = 80, message = "Name's size can't be more than 80 caracteres") String name,
-        @NotBlank(message = "Course's acronym can't be blank") @Size(max = 10, message = "Acronym's size can't be more than 10 caracteres") String acronym
+        @NotBlank(message = "Course's acronym can't be blank") @Size(max = 10, message = "Acronym's size can't be more than 10 caracteres") String acronym,
+        @NotBlank(message = "Course's description can't be blank") @Size(max = 10, message = "Acronym's description can't be more than 150 caracteres") String description
 ) {
 }
