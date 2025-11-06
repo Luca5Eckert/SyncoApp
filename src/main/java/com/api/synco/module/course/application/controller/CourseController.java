@@ -183,6 +183,17 @@ public class CourseController {
 
     }
 
+    @Operation(
+            summary = "Get a Course",
+            description = "Get the course "
+    )
+    @ApiResponses ( value = {
+            @ApiResponse (
+                    responseCode = "200",
+                    description = "Get user.",
+                    content = @Content(schema = @Schema(implementation = GetCourseResponse.class))
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<CustomApiResponse<GetCourseResponse>> get(@PathVariable long id){
         var response = courseService.getCourse(id);
