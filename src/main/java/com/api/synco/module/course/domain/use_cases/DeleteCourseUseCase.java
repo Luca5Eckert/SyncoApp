@@ -39,7 +39,7 @@ public class DeleteCourseUseCase {
     public void execute(DeleteCourseRequest deleteCourseRequest, long idUser){
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
-        if (CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
+        if (!CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
 
         if(!courseRepository.existById(deleteCourseRequest.id())) throw new CourseNotFoundException(deleteCourseRequest.id());
 

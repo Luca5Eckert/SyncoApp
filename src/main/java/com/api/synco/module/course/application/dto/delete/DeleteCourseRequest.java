@@ -6,7 +6,7 @@ public record DeleteCourseRequest(long id) {
 
     public DeleteCourseRequest {
         if(id < 1){
-            throw new UserIdInvalidException();
+            throw new IllegalArgumentException("User's id is invalid");
         }
     }
 

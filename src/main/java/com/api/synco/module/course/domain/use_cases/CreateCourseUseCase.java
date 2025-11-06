@@ -49,7 +49,7 @@ public class CreateCourseUseCase {
     public CourseEntity execute(CreateCourseRequest createCourseRequest, long idUser) {
         var user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundDomainException(idUser));
 
-        if (CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutDeleteCoursePermissionException();
+        if (!CourseEntity.havePermissionToModify(user.getRole())) throw new UserWithoutCreateCoursePermissionException();
 
         CourseEntity course = new CourseEntity(
                 createCourseRequest.name(),

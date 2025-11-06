@@ -13,7 +13,8 @@ public class CourseMapper {
         return new CreateCourseResponse(
                 course.getId(),
                 course.getName(),
-                course.getAcronym()
+                course.getAcronym(),
+                course.getDescription()
         );
 
     }
@@ -22,15 +23,17 @@ public class CourseMapper {
         return new UpdateCourseResponse(
                 course.getId(),
                 course.getName(),
-                course.getAcronym()
+                course.getAcronym(),
+                course.getDescription()
         );
     }
 
-    public GetCourseResponse toGetResponse(CourseEntity courseEntity) {
+    public GetCourseResponse toGetResponse(CourseEntity course) {
         return new GetCourseResponse(
-                courseEntity.getId(),
-                courseEntity.getName(),
-                courseEntity.getAcronym()
+                course.getId(),
+                course.getName(),
+                course.getAcronym(),
+                course.getDescription()
         );
     }
 

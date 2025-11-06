@@ -53,6 +53,7 @@ public class UpdateCourseUseCase {
 
         course.setName(updateCourseRequest.name());
         course.setAcronym(updateCourseRequest.acronym());
+        course.setDescription(updateCourseRequest.description());
 
         courseRepository.save(course);
 

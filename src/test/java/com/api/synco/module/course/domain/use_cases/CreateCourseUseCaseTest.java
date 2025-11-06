@@ -45,7 +45,7 @@ class CreateCourseUseCaseTest {
 
     @BeforeEach
     public void setup(){
-        createCourseRequest = new CreateCourseRequest("Nome", "N");
+        createCourseRequest = new CreateCourseRequest("Nome", "N", "Descricao");
 
         user = new UserEntity(null, null, null, RoleUser.ADMIN);
     }
@@ -63,6 +63,7 @@ class CreateCourseUseCaseTest {
         assertThat(response).isNotNull();
         assertThat(response.getName()).isEqualTo(createCourseRequest.name());
         assertThat(response.getAcronym()).isEqualTo(createCourseRequest.acronym());
+        assertThat(response.getDescription()).isEqualTo(createCourseRequest.description());
 
         var captor = ArgumentCaptor.forClass(CourseEntity.class);
         verify(courseRepository).save(captor.capture());
@@ -71,6 +72,7 @@ class CreateCourseUseCaseTest {
         assertThat(saved).isNotNull();
         assertThat(saved.getName()).isEqualTo(createCourseRequest.name());
         assertThat(saved.getAcronym()).isEqualTo(createCourseRequest.acronym());
+        assertThat(saved.getDescription()).isEqualTo(createCourseRequest.description());
 
     }
 
