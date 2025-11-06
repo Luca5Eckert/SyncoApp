@@ -1,6 +1,7 @@
 package com.api.synco.module.course.domain.mapper;
 
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
+import com.api.synco.module.course.application.dto.get.GetAllCourseResponse;
 import com.api.synco.module.course.application.dto.get.GetCourseResponse;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
 import com.api.synco.module.course.domain.CourseEntity;
@@ -30,6 +31,15 @@ public class CourseMapper {
 
     public GetCourseResponse toGetResponse(CourseEntity course) {
         return new GetCourseResponse(
+                course.getId(),
+                course.getName(),
+                course.getAcronym(),
+                course.getDescription()
+        );
+    }
+
+    public GetAllCourseResponse toGetAllResponse(CourseEntity course) {
+        return new GetAllCourseResponse(
                 course.getId(),
                 course.getName(),
                 course.getAcronym(),

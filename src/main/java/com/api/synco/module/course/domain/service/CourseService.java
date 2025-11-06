@@ -3,6 +3,7 @@ package com.api.synco.module.course.domain.service;
 import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
+import com.api.synco.module.course.application.dto.get.GetAllCourseResponse;
 import com.api.synco.module.course.application.dto.get.GetCourseResponse;
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
@@ -94,7 +95,7 @@ public class CourseService {
      *
      * @return A List with GetCourseResponse
      */
-    public List<GetCourseResponse> getAll(
+    public List<GetAllCourseResponse> getAll(
             String name,
             String acronym,
             int pageNumber,
@@ -109,7 +110,7 @@ public class CourseService {
         );
 
         return listUsers.stream()
-                .map(courseMapper::toGetResponse)
+                .map(courseMapper::toGetAllResponse)
                 .toList();
 
     }

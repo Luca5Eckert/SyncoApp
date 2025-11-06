@@ -1,8 +1,6 @@
 package com.api.synco.module.course.application.dto.get;
 
-import java.util.List;
-
-public record GetCourseResponse(
+public record GetAllCourseResponse(
         long id,
         String name,
         String acronym,

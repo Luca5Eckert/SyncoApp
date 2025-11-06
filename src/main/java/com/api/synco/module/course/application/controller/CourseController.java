@@ -5,6 +5,7 @@ import com.api.synco.infrastructure.api.CustomApiResponse;
 import com.api.synco.module.course.application.dto.create.CreateCourseRequest;
 import com.api.synco.module.course.application.dto.create.CreateCourseResponse;
 import com.api.synco.module.course.application.dto.delete.DeleteCourseRequest;
+import com.api.synco.module.course.application.dto.get.GetAllCourseResponse;
 import com.api.synco.module.course.application.dto.get.GetCourseResponse;
 import com.api.synco.module.course.application.dto.update.UpdateCourseRequest;
 import com.api.synco.module.course.application.dto.update.UpdateCourseResponse;
@@ -163,7 +164,7 @@ public class CourseController {
             )
     })
     @GetMapping()
-    public ResponseEntity<CustomApiResponse<List<GetCourseResponse>>> getALl(
+    public ResponseEntity<CustomApiResponse<List<GetAllCourseResponse>>> getALl(
             @RequestParam(value = "name", required = false)
             @Parameter(description = "Filters by name containing the value")
             String name,
