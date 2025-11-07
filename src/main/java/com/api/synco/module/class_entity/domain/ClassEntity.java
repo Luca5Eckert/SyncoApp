@@ -2,10 +2,7 @@ package com.api.synco.module.class_entity.domain;
 
 import com.api.synco.module.class_entity.domain.enumerator.Shift;
 import com.api.synco.module.course.domain.CourseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class ClassEntity {
@@ -14,38 +11,35 @@ public class ClassEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String name;
+    private int number;
 
+    @ManyToOne(fetch = FetchType.LAZY)
     private CourseEntity course;
+
+    private int totalHours;
 
     private Shift shift;
 
     public ClassEntity() {
     }
 
-    public ClassEntity(String name, CourseEntity course, Shift shift) {
-        this.name = name;
+    public ClassEntity(int number, CourseEntity course, int totalHours, Shift shift) {
+        this.number = number;
         this.course = course;
+        this.totalHours = totalHours;
         this.shift = shift;
     }
 
-    public ClassEntity(long id, String name, CourseEntity course, Shift shift) {
+    public ClassEntity(long id, int number, CourseEntity course, int totalHours, Shift shift) {
         this.id = id;
-        this.name = name;
+        this.number = number;
         this.course = course;
+        this.totalHours = totalHours;
         this.shift = shift;
     }
 
     public long getId() {
         return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public CourseEntity getCourse() {
@@ -54,6 +48,22 @@ public class ClassEntity {
 
     public void setCourse(CourseEntity course) {
         this.course = course;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public int getTotalHours() {
+        return totalHours;
+    }
+
+    public void setTotalHours(int totalHours) {
+        this.totalHours = totalHours;
     }
 
     public Shift getShift() {
