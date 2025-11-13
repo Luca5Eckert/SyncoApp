@@ -52,8 +52,9 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
             String jwt = getJwtFromRequest(request);
 
-            if (jwt == null) {
-                throw new TokenException("Token can't be null");
+            if(jwt == null){
+                filterChain.doFilter(request, response);
+                return;
             }
 
             if (!jwtTokenProvider.validateToken(jwt)) {
@@ -81,6 +82,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
                 filterChain.doFilter(request, response);
             }
+
 
         } catch (Exception ex) {
 
