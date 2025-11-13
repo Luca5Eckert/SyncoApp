@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ClassRepositoryJpa extends JpaRepository<ClassEntity, ClassEntityId> {
 
@@ -17,6 +19,6 @@ public interface ClassRepositoryJpa extends JpaRepository<ClassEntity, ClassEnti
         ORDER BY c.id.number DESC
         LIMIT 1
     """)
-    int getLastNumberOfCourse(CourseEntity course);
+    Optional<Integer> getLastNumberOfCourse(CourseEntity course);
 
 }

@@ -22,6 +22,6 @@ public class ClassRepositoryAdapter implements ClassRepository {
 
     @Override
     public int getNextNumberOfCourse(CourseEntity course) {
-        return classRepositoryJpa.getLastNumberOfCourse(course) + 1;
+        return classRepositoryJpa.getLastNumberOfCourse(course).orElse(1);
     }
 }
