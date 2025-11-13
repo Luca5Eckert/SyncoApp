@@ -7,10 +7,6 @@ import java.util.Optional;
 
 public interface ClassRepository {
 
-    Optional<ClassEntity> findById(long id);
-
-    int getNumberForCourse(CourseEntity course);
-
     void save(ClassEntity classEntity);
 
     int getNextNumberOfCourse(CourseEntity course);
