@@ -2,6 +2,7 @@ package com.api.synco.module.class_entity.domain.use_case;
 
 import com.api.synco.module.class_entity.application.dto.create.CreateClassRequest;
 import com.api.synco.module.class_entity.domain.ClassEntity;
+import com.api.synco.module.class_entity.domain.ClassEntityId;
 import com.api.synco.module.class_entity.domain.exception.user.UserWithoutCreateClassPermissionException;
 import com.api.synco.module.class_entity.domain.port.ClassRepository;
 import com.api.synco.module.course.domain.CourseEntity;
@@ -34,8 +35,9 @@ public class CreateClassUseCase {
                 .orElseThrow( () -> new CourseNotFoundException(createClassRequest.courseId()));
 
         int numberOfClass = classRepository.getNextNumberOfCourse(course);
+        ClassEntityId id = new ClassEntityId(course.getId(), numberOfClass);
 
-        ClassEntity classEntity = new ClassEntity(numberOfClass, course, createClassRequest.totalHours(), createClassRequest.shift());
+        ClassEntity classEntity = new ClassEntity(id, course, createClassRequest.totalHours(), createClassRequest.shift());
         classRepository.save(classEntity);
 
         return classEntity;

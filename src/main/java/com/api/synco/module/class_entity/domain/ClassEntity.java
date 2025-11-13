@@ -5,16 +5,16 @@ import com.api.synco.module.course.domain.CourseEntity;
 import com.api.synco.module.user.domain.enumerator.RoleUser;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 public class ClassEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private int number;
+    @EmbeddedId
+    private ClassEntityId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
     private CourseEntity course;
 
     private int totalHours;
@@ -24,13 +24,6 @@ public class ClassEntity {
     public ClassEntity() {
     }
 
-    public ClassEntity(int number, CourseEntity course, int totalHours, Shift shift) {
-        this.number = number;
-        this.course = course;
-        this.totalHours = totalHours;
-        this.shift = shift;
-    }
-
     public ClassEntity(CourseEntity course, int totalHours, Shift shift) {
         this.course = course;
         this.totalHours = totalHours;
@@ -38,9 +31,8 @@ public class ClassEntity {
     }
 
 
-    public ClassEntity(long id, int number, CourseEntity course, int totalHours, Shift shift) {
+    public ClassEntity(ClassEntityId id, CourseEntity course, int totalHours, Shift shift) {
         this.id = id;
-        this.number = number;
         this.course = course;
         this.totalHours = totalHours;
         this.shift = shift;
@@ -53,7 +45,7 @@ public class ClassEntity {
         };
     }
 
-    public long getId() {
+    public ClassEntityId getId() {
         return id;
     }
 
@@ -65,13 +57,6 @@ public class ClassEntity {
         this.course = course;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
 
     public int getTotalHours() {
         return totalHours;
@@ -87,6 +72,18 @@ public class ClassEntity {
 
     public void setShift(Shift shift) {
         this.shift = shift;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ClassEntity that = (ClassEntity) o;
+        return totalHours == that.totalHours && Objects.equals(id, that.id) && Objects.equals(course, that.course) && shift == that.shift;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, course, totalHours, shift);
     }
 
 }
