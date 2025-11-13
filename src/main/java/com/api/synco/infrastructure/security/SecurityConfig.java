@@ -1,6 +1,9 @@
 package com.api.synco.infrastructure.security;
 
 import com.api.synco.infrastructure.security.jwt.JwtTokenAuthenticationFilter;
+import com.api.synco.infrastructure.security.jwt.JwtTokenProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,14 +12,28 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    @Qualifier("handlerExceptionResolver")
+    private HandlerExceptionResolver resolver;
+
+    @Bean
+    public JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter(
+            JwtTokenProvider jwtTokenProvider,
+            UserDetailsService userDetailsService
+    ) {
+        return new JwtTokenAuthenticationFilter(jwtTokenProvider, userDetailsService, resolver);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtTokenAuthenticationFilter authenticationFilter) throws Exception {
@@ -29,6 +46,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/api/blog/auth/password").authenticated();
                     auth.anyRequest().permitAll();
                 })
+
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

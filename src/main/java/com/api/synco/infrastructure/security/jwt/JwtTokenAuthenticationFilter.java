@@ -1,5 +1,7 @@
 package com.api.synco.infrastructure.security.jwt;
 
+import com.api.synco.infrastructure.exception.token.TokenException;
+import com.api.synco.infrastructure.exception.token.TokenInvalidException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -19,11 +22,16 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserDetailsService userDetailsService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
-
-    public JwtTokenAuthenticationFilter(JwtTokenProvider jwtTokenProvider, UserDetailsService userDetailsService) {
+    public JwtTokenAuthenticationFilter(
+            JwtTokenProvider jwtTokenProvider,
+            UserDetailsService userDetailsService,
+            HandlerExceptionResolver handlerExceptionResolver // <-- NOVO
+    ) {
         this.jwtTokenProvider = jwtTokenProvider;
         this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver; // <-- NOVO
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
@@ -39,36 +47,49 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         try {
+
             String jwt = getJwtFromRequest(request);
 
-
-            if (jwt != null && jwtTokenProvider.validateToken(jwt)) {
-                String email = jwtTokenProvider.getUserEmail(jwt);
-
-
-                if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-
-                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-
-
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
+            if (jwt == null) {
+                throw new TokenException("Token can't be null");
             }
+
+            if (!jwtTokenProvider.validateToken(jwt)) {
+                throw new TokenInvalidException();
+            }
+
+
+            String email = jwtTokenProvider.getUserEmail(jwt);
+
+
+            if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+
+
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                filterChain.doFilter(request, response);
+            }
+
         } catch (Exception ex) {
-            throw new RuntimeException("Error on the authentication of token");
+
+            logger.error("Authentication filter error ");
+
+            this.handlerExceptionResolver.resolveException(request, response, null, ex);
+
         }
 
-
-        filterChain.doFilter(request, response);
     }
 
 }

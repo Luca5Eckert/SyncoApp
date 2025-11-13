@@ -44,7 +44,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomApiResponse<?>> handlerTokenException(TokenException tokenException, HttpServletRequest httpServletRequest){
         String path = httpServletRequest.getRequestURI();
 
-        return ResponseEntity.badRequest().body(CustomApiResponse.error(HttpStatus.BAD_REQUEST.value(), "TOKEN_EXCEPTION", tokenException.getMessage(), path));
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+
+        return ResponseEntity.status(status).body(CustomApiResponse.error(status.value(), "TOKEN_EXCEPTION", tokenException.getMessage(), path));
     }
 
     // Major Exceptions
@@ -69,9 +71,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<CustomApiResponse<?>> handlerDataViolation(DataIntegrityViolationException dataIntegrityViolationException, HttpServletRequest httpServletRequest){
         String path = httpServletRequest.getRequestURI();
 
-        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        HttpStatus status = HttpStatus.CONFLICT;
 
-        return ResponseEntity.status(httpStatus).body(CustomApiResponse.error(httpStatus.value(), "DATA_INTEGRITY_VIOLATION", "The data integrity violation have been violation", path));
+        return ResponseEntity.status(status).body(CustomApiResponse.error(status.value(), "DATA_INTEGRITY_VIOLATION", "The data integrity violation have been violation", path));
     }
 
 }
