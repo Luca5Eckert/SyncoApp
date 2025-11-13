@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface ClassRepositoryJpa extends JpaRepository<ClassEntity, ClassEntityId> {
 
     @Query("""
-        SELECT c.number
+        SELECT c.id.number
         FROM ClassEntity c
         WHERE c.course = :course
-        ORDER BY c.number DESC
+        ORDER BY c.id.number DESC
         LIMIT 1
     """)
     int getLastNumberOfCourse(CourseEntity course);

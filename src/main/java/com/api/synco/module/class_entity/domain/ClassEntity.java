@@ -14,7 +14,7 @@ public class ClassEntity {
     private ClassEntityId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id")
+    @MapsId("courseId")
     private CourseEntity course;
 
     private int totalHours;

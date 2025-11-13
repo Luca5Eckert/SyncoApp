@@ -11,6 +11,11 @@ public class ClassEntityId {
 
     private final int number;
 
+    public ClassEntityId() {
+        this.courseId = -1;
+        this.number = -1;
+    }
+
     public ClassEntityId(long courseId, int number) {
         this.courseId = courseId;
         this.number = number;
