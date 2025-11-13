@@ -2,6 +2,7 @@ package com.api.synco.module.class_entity.domain;
 
 import com.api.synco.module.class_entity.domain.enumerator.Shift;
 import com.api.synco.module.course.domain.CourseEntity;
+import com.api.synco.module.user.domain.enumerator.RoleUser;
 import jakarta.persistence.*;
 
 @Entity
@@ -30,12 +31,26 @@ public class ClassEntity {
         this.shift = shift;
     }
 
+    public ClassEntity(CourseEntity course, int totalHours, Shift shift) {
+        this.course = course;
+        this.totalHours = totalHours;
+        this.shift = shift;
+    }
+
+
     public ClassEntity(long id, int number, CourseEntity course, int totalHours, Shift shift) {
         this.id = id;
         this.number = number;
         this.course = course;
         this.totalHours = totalHours;
         this.shift = shift;
+    }
+
+    public static boolean havePermissionToModify(RoleUser role) {
+        return switch (role){
+            case ADMIN -> true;
+            case USER -> false;
+        };
     }
 
     public long getId() {

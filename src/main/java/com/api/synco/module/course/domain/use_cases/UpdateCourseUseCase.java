@@ -7,6 +7,7 @@ import com.api.synco.module.course.domain.port.CourseRepository;
 import com.api.synco.module.user.domain.exception.UserNotFoundDomainException;
 import com.api.synco.module.user.domain.exception.permission.UserWithoutEditPermissionDomainException;
 import com.api.synco.module.user.domain.port.UserRepository;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component

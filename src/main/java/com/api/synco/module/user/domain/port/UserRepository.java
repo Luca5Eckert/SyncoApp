@@ -14,7 +14,7 @@ public interface UserRepository {
 
     boolean existsByEmail(Email email);
 
-    Optional<UserEntity> findById(long idUserAutenticated);
+    Optional<UserEntity> findById(long id);
 
     boolean existsById(long id);
 

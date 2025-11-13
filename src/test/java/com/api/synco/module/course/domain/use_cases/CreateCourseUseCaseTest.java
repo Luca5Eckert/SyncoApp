@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -69,7 +70,7 @@ class CreateCourseUseCaseTest {
         verify(courseRepository).save(captor.capture());
         var saved = captor.getValue();
 
-        assertThat(saved).isNotNull();
+        assertNotNull(saved);
         assertThat(saved.getName()).isEqualTo(createCourseRequest.name());
         assertThat(saved.getAcronym()).isEqualTo(createCourseRequest.acronym());
         assertThat(saved.getDescription()).isEqualTo(createCourseRequest.description());
@@ -83,6 +84,7 @@ class CreateCourseUseCaseTest {
         user.setRole(RoleUser.USER);
 
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+
 
         // act and assert
         assertThatThrownBy( () -> createCourseUseCase.execute(createCourseRequest, id))

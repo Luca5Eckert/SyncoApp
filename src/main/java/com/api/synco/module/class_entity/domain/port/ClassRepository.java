@@ -11,4 +11,7 @@ public interface ClassRepository {
 
     int getNumberForCourse(CourseEntity course);
 
+    void save(ClassEntity classEntity);
+
+    int getNextNumberOfCourse(CourseEntity course);
 }
